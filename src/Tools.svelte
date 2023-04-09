@@ -26,8 +26,9 @@
   )}
 >
   <option value="pen">Pen</option>
-  <option value="spray">Spray</option>
-  <option value="line">Line</option>
+  <option value="dashedLine">Dashed Line</option>
+  <option value="line"> Straight Line</option>
+  <option value="gradientLine"> Gradient Line</option>
 </select>
 
 <style>

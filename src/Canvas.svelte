@@ -7,7 +7,7 @@
     drawHexagon,
     drawEllipse,
   } from "./shapes";
-  import { pen, spray, drawLine } from "./styles";
+  import { pen, dashedLline, drawLine, gradientLine } from "./styles";
   import { selectedShape, selectedStroke, shape, stroke } from "./stores";
   export let brushsize; //brush size
   export let color; //brush color
@@ -69,8 +69,10 @@
       drawLine(e, context, prevMouseX, prevMouseY);
     } else if ($selectedStroke === "pen" && $shape === "false") {
       pen(e, context);
-    } else if ($selectedStroke === "spray" && $shape === "false") {
-      spray(e, context, hex);
+    } else if ($selectedStroke === "gradientLine" && $shape === "false") {
+      gradientLine(e, context);
+    } else if ($selectedStroke === "dashedLine" && $shape === "false") {
+      dashedLline(e, context);
     } else if ($selectedShape === "hexagon" && $stroke === "false") {
       drawHexagon(e, context, prevMouseX, prevMouseY);
     } else if ($selectedShape === "ellipse" && $stroke === "false") {

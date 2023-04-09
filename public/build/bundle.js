@@ -640,6 +640,7 @@ var app = (function () {
 
     //Draw Circle
     const drawCircle = (e, ctx, prevMouseX, prevMouseY) => {
+      ctx.setLineDash([]);
       ctx.beginPath();
       let radius = Math.sqrt(
         Math.pow(prevMouseX - e.offsetX, 2) + Math.pow(prevMouseY - e.offsetY, 2)
@@ -650,6 +651,7 @@ var app = (function () {
 
     //Draw Triangle
     const drawTriangle = (e, ctx, prevMouseX, prevMouseY) => {
+      ctx.setLineDash([]);
       ctx.beginPath();
       ctx.moveTo(prevMouseX, prevMouseY); // moving triangle to the mouse pointer
       ctx.lineTo(e.offsetX, e.offsetY); // creating first line according to the mouse pointer
@@ -660,6 +662,7 @@ var app = (function () {
 
     //Draw Rectangle or square
     const drawRect = (e, ctx, prevMouseX, prevMouseY) => {
+      ctx.setLineDash([]);
       ctx.strokeRect(
         e.offsetX,
         e.offsetY,
@@ -670,6 +673,7 @@ var app = (function () {
 
     //draw hexagon
     const drawHexagon = (e, ctx, prevMouseX, prevMouseY) => {
+      ctx.setLineDash([]);
       // Calculate the radius of the polygon based on the distance between the starting and ending points
       const radius = Math.sqrt(
         (e.offsetX - prevMouseX) ** 2 + (e.offsetY - prevMouseY) ** 2
@@ -702,6 +706,7 @@ var app = (function () {
 
     //draw Ellipse
     const drawEllipse = (e, ctx, prevMouseX, prevMouseY) => {
+      ctx.setLineDash([]);
       // Calculate the center point of the ellipse
       const centerX = (prevMouseX + e.offsetX) / 2;
       const centerY = (prevMouseY + e.offsetY) / 2;
@@ -726,35 +731,37 @@ var app = (function () {
 
     //PEN
     const pen = (e, ctx) => {
+      ctx.setLineDash([]);
       ctx.lineTo(e.offsetX, e.offsetY); // creating line according to the mouse pointer
       ctx.stroke();
     };
 
     //Draw Line
     const drawLine = (e, ctx, prevMouseX, prevMouseY) => {
+      ctx.setLineDash([]);
       ctx.beginPath();
       ctx.moveTo(prevMouseX, prevMouseY); // moving polygon to the mouse pointer
       ctx.lineTo(e.offsetX, e.offsetY);
       ctx.stroke();
     };
 
-    // Draw spray effect that follows the movement of the mouse pointer
-    const spray = (e, ctx, hex) => {
-      const radius = 20; // radius of the spray
-      const density = 80; // number of particles in the spray
+    //dashed stroke
+    const dashedLline = (e, ctx) => {
+      ctx.setLineDash([10, 10]);
+      ctx.lineTo(e.offsetX, e.offsetY); // creating line according to the mouse pointer
+      ctx.stroke();
+    };
 
-      for (let i = 0; i < density; i++) {
-        const offsetX = (Math.random() - 0.5) * radius * 2;
-        const offsetY = (Math.random() - 0.5) * radius * 2;
-        const distanceFromCenter = Math.sqrt(offsetX ** 2 + offsetY ** 2);
-
-        if (distanceFromCenter < radius) {
-          ctx.fillStyle = hex;
-          const particleX = e.offsetX + offsetX;
-          const particleY = e.offsetY + offsetY;
-          ctx.fillRect(particleX, particleY, 1, 1);
-        }
-      }
+    //dashed stroke
+    const gradientLine = (e, ctx) => {
+      ctx.setLineDash([]);
+      const gradient = ctx.createLinearGradient(0, 0, 500, 0);
+      gradient.addColorStop(0, "red");
+      gradient.addColorStop(0.5, "green");
+      gradient.addColorStop(1, "blue");
+      ctx.strokeStyle = gradient;
+      ctx.lineTo(e.offsetX, e.offsetY); // creating line according to the mouse pointer
+      ctx.stroke();
     };
 
     const subscriber_queue = [];
@@ -824,7 +831,7 @@ var app = (function () {
     		c: function create() {
     			canvas_1 = element("canvas");
     			attr_dev(canvas_1, "class", "svelte-15puylx");
-    			add_location(canvas_1, file$6, 101, 0, 3415);
+    			add_location(canvas_1, file$6, 103, 0, 3548);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -934,8 +941,10 @@ var app = (function () {
     			drawLine(e, context, prevMouseX, prevMouseY);
     		} else if ($selectedStroke === "pen" && $shape === "false") {
     			pen(e, context);
-    		} else if ($selectedStroke === "spray" && $shape === "false") {
-    			spray(e, context, hex);
+    		} else if ($selectedStroke === "gradientLine" && $shape === "false") {
+    			gradientLine(e, context);
+    		} else if ($selectedStroke === "dashedLine" && $shape === "false") {
+    			dashedLline(e, context);
     		} else if ($selectedShape === "hexagon" && $stroke === "false") {
     			drawHexagon(e, context, prevMouseX, prevMouseY);
     		} else if ($selectedShape === "ellipse" && $stroke === "false") {
@@ -993,8 +1002,9 @@ var app = (function () {
     		drawHexagon,
     		drawEllipse,
     		pen,
-    		spray,
+    		dashedLline,
     		drawLine,
+    		gradientLine,
     		selectedShape,
     		selectedStroke,
     		shape,
@@ -4133,6 +4143,7 @@ var app = (function () {
     	let option5;
     	let option6;
     	let option7;
+    	let option8;
     	let mounted;
     	let dispose;
 
@@ -4160,9 +4171,11 @@ var app = (function () {
     			option5 = element("option");
     			option5.textContent = "Pen";
     			option6 = element("option");
-    			option6.textContent = "Spray";
+    			option6.textContent = "Dashed Line";
     			option7 = element("option");
-    			option7.textContent = "Line";
+    			option7.textContent = "Straight Line";
+    			option8 = element("option");
+    			option8.textContent = "Gradient Line";
     			add_location(h20, file$1, 4, 0, 99);
     			option0.__value = "rectangle";
     			option0.value = option0.__value;
@@ -4186,12 +4199,15 @@ var app = (function () {
     			option5.__value = "pen";
     			option5.value = option5.__value;
     			add_location(option5, file$1, 27, 2, 717);
-    			option6.__value = "spray";
+    			option6.__value = "dashedLine";
     			option6.value = option6.__value;
     			add_location(option6, file$1, 28, 2, 753);
     			option7.__value = "line";
     			option7.value = option7.__value;
-    			add_location(option7, file$1, 29, 2, 793);
+    			add_location(option7, file$1, 29, 2, 804);
+    			option8.__value = "gradientLine";
+    			option8.value = option8.__value;
+    			add_location(option8, file$1, 30, 2, 852);
     			attr_dev(select1, "class", "dropdown svelte-10vqb9b");
     			if (/*$selectedStroke*/ ctx[3] === void 0) add_render_callback(() => /*select1_change_handler*/ ctx[6].call(select1));
     			add_location(select1, file$1, 20, 0, 542);
@@ -4216,6 +4232,7 @@ var app = (function () {
     			append_dev(select1, option5);
     			append_dev(select1, option6);
     			append_dev(select1, option7);
+    			append_dev(select1, option8);
     			select_option(select1, /*$selectedStroke*/ ctx[3], true);
 
     			if (!mounted) {

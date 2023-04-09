@@ -1,5 +1,6 @@
 //Draw Circle
 export const drawCircle = (e, ctx, prevMouseX, prevMouseY) => {
+  ctx.setLineDash([]);
   ctx.beginPath();
   let radius = Math.sqrt(
     Math.pow(prevMouseX - e.offsetX, 2) + Math.pow(prevMouseY - e.offsetY, 2)
@@ -10,6 +11,7 @@ export const drawCircle = (e, ctx, prevMouseX, prevMouseY) => {
 
 //Draw Triangle
 export const drawTriangle = (e, ctx, prevMouseX, prevMouseY) => {
+  ctx.setLineDash([]);
   ctx.beginPath();
   ctx.moveTo(prevMouseX, prevMouseY); // moving triangle to the mouse pointer
   ctx.lineTo(e.offsetX, e.offsetY); // creating first line according to the mouse pointer
@@ -20,6 +22,7 @@ export const drawTriangle = (e, ctx, prevMouseX, prevMouseY) => {
 
 //Draw Rectangle or square
 export const drawRect = (e, ctx, prevMouseX, prevMouseY) => {
+  ctx.setLineDash([]);
   ctx.strokeRect(
     e.offsetX,
     e.offsetY,
@@ -30,6 +33,7 @@ export const drawRect = (e, ctx, prevMouseX, prevMouseY) => {
 
 //draw hexagon
 export const drawHexagon = (e, ctx, prevMouseX, prevMouseY) => {
+  ctx.setLineDash([]);
   // Calculate the radius of the polygon based on the distance between the starting and ending points
   const radius = Math.sqrt(
     (e.offsetX - prevMouseX) ** 2 + (e.offsetY - prevMouseY) ** 2
@@ -62,6 +66,7 @@ export const drawHexagon = (e, ctx, prevMouseX, prevMouseY) => {
 
 //draw Ellipse
 export const drawEllipse = (e, ctx, prevMouseX, prevMouseY) => {
+  ctx.setLineDash([]);
   // Calculate the center point of the ellipse
   const centerX = (prevMouseX + e.offsetX) / 2;
   const centerY = (prevMouseY + e.offsetY) / 2;
