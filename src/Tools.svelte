@@ -7,8 +7,8 @@
 <select
   class="dropdown"
   bind:value={$selectedShape}
-  on:change={(e) => (
-    ($selectedShape = e.target.value), ($shape = "true"), ($stroke = "false")
+  on:click={(e) => (
+    ($selectedShape = e.target.value), ($shape = true), ($stroke = false)
   )}
 >
   <option value="rectangle">Rectangle</option>
@@ -21,8 +21,8 @@
 <select
   class="dropdown"
   bind:value={$selectedStroke}
-  on:change={(e) => (
-    ($selectedStroke = e.target.value), ($shape = "false"), ($stroke = "true")
+  on:click={(e) => (
+    ($selectedStroke = e.target.value), ($shape = false), ($stroke = true)
   )}
 >
   <option value="pen">Pen</option>

@@ -21,7 +21,7 @@
 
   const setCanvasBackground = () => {
     // setting canvas to the original background color
-    context.fillStyle = "beige";
+    context.fillStyle = "#fffbeb";
     context.fillRect(0, 0, canvas.width, canvas.height);
   };
   window.addEventListener("load", () => {
@@ -44,8 +44,8 @@
   }
 
   const handleStart = (e) => {
+    e.preventDefault();
     isDrawing = true;
-
     prevMouseX = e.offsetX; // passing current mouseX position as prevMouseX value
     prevMouseY = e.offsetY; // passing current mouseY position as prevMouseY value
     context.beginPath();
@@ -55,28 +55,32 @@
   const handleEnd = () => {
     isDrawing = false;
   };
+
   const handleMove = (e) => {
+    e.preventDefault();
     if (!isDrawing) return;
     context.putImageData(snapshot, 0, 0); // adding copied canvas data on to this canvas
     //if condition to select a shape or stroke
-    if ($selectedShape === "rectangle" && $stroke === "false") {
+    if ($selectedShape === "rectangle" && $stroke === false) {
       drawRect(e, context, prevMouseX, prevMouseY);
-    } else if ($selectedShape === "triangle" && $stroke === "false") {
+    } else if ($selectedShape === "triangle" && $stroke === false) {
       drawTriangle(e, context, prevMouseX, prevMouseY);
-    } else if ($selectedShape === "circle" && $stroke === "false") {
+    } else if ($selectedShape === "circle" && $stroke === false) {
       drawCircle(e, context, prevMouseX, prevMouseY);
-    } else if ($selectedStroke === "line" && $shape === "false") {
-      drawLine(e, context, prevMouseX, prevMouseY);
-    } else if ($selectedStroke === "pen" && $shape === "false") {
-      pen(e, context);
-    } else if ($selectedStroke === "gradientLine" && $shape === "false") {
-      gradientLine(e, context);
-    } else if ($selectedStroke === "dashedLine" && $shape === "false") {
-      dashedLline(e, context);
-    } else if ($selectedShape === "hexagon" && $stroke === "false") {
+    } else if ($selectedShape === "hexagon" && $stroke === false) {
       drawHexagon(e, context, prevMouseX, prevMouseY);
-    } else if ($selectedShape === "ellipse" && $stroke === "false") {
+    } else if ($selectedShape === "ellipse" && $stroke === false) {
       drawEllipse(e, context, prevMouseX, prevMouseY);
+    } else if ($selectedStroke === "line" && $shape === false) {
+      drawLine(e, context, prevMouseX, prevMouseY);
+    } else if ($selectedStroke === "pen" && $shape === false) {
+      pen(e, context);
+    } else if ($selectedStroke === "gradientLine" && $shape === false) {
+      gradientLine(e, context, hex);
+      context.strokeStyle = hex;
+    } else if ($selectedStroke === "dashedLine" && $shape === false) {
+      dashedLline(e, context);
+      context.setLineDash([]);
     } else {
       console.log("not a valid stroke or shape selected");
     }

@@ -19,9 +19,7 @@
     "svelte": "^3.55.0"
   },
   "dependencies": {
-    "@jridgewell/sourcemap-codec": "^1.4.15",
-    "@npmcli/fs": "^3.1.0",
-    "@rollup/plugin-inject": "^5.0.3",
+  
     "color-picker-svelte": "^1.1.1",
     "p5": "^1.6.0",
     "sirv-cli": "^2.0.0"

@@ -1,11 +1,10 @@
 <script>
   import Canvas from "./Canvas.svelte";
-
   import { Color, ColorInput } from "color-picker-svelte"; //import color-picker-svelte library
   import Tools from "./Tools.svelte";
+
   let color = new Color("#ff3d91"); //creating a color object
   let brushsize = 1; //size of brush
-
   let handleClear; //to clear canvas
   let handleSave; //to save the canvas as image
 </script>
@@ -19,10 +18,34 @@
     </section>
     <!-- Toolbox Section -->
     <section class="toolbox">
+      <h2>Artify</h2>
       <div class="canvas-tools">
-        <h2>Canvas</h2>
-        <button class="clear-canvas" on:click={handleClear}>Clear</button>
-        <button class="save-img" on:click={handleSave}>Save</button>
+        <button class="canvas-tools-buttons" on:click={handleSave}>
+          <span class="material-symbols-rounded"> download</span>
+        </button>
+        <button class="canvas-tools-buttons">
+          <span class="material-symbols-rounded"> share </span>
+        </button>
+        <button class="canvas-tools-buttons">
+          <span class="material-symbols-rounded"> zoom_in</span>
+        </button>
+        <button class="canvas-tools-buttons">
+          <span class="material-symbols-rounded"> zoom_out </span>
+        </button>
+      </div>
+      <div class="canvas-tools">
+        <button class="canvas-tools-buttons" on:click={handleClear}>
+          <span class="material-symbols-rounded"> save </span>
+        </button>
+        <button class="canvas-tools-buttons">
+          <span class="material-symbols-rounded"> share </span>
+        </button>
+        <button class="canvas-tools-buttons">
+          <span class="material-symbols-rounded"> undo </span>
+        </button>
+        <button class="canvas-tools-buttons">
+          <span class="material-symbols-rounded"> redo </span>
+        </button>
       </div>
 
       <div class="painting-tools">
@@ -55,7 +78,7 @@
   body {
     margin: 0;
     overflow: hidden;
-    background-color: #ffffff;
+    background-color: #fffbeb;
     font-size: 14px;
     line-height: 1;
   }
@@ -69,30 +92,36 @@
     right: 0;
     width: 300px;
     overflow-y: scroll;
-
-    background-color: #ffffff;
-    border-left: 1px solid #545454;
-
+    background: linear-gradient(to bottom, #fff6bd, #ffd4b2);
+    box-shadow: 0 3px 4px black;
     display: flex;
     flex-direction: column;
+  }
+  .canvas-tools {
+    display: flex;
+    flex-direction: row;
+  }
+  .eraser-tools {
+    display: flex;
+    flex-direction: row;
   }
   section.canvas {
     left: 0;
     width: calc(100vw - 180px);
-
     display: flex;
     justify-content: center;
     align-items: center;
   }
   section.toolbox > div {
     padding: 20px 16px 8px 16px;
-    border-bottom: 1px solid #545454;
   }
   h2 {
     margin-bottom: 24px;
     font-size: 20px;
     text-transform: uppercase;
     text-align: center;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color: #4b778d;
   }
 
   .canvas-tools button {
@@ -109,17 +138,32 @@
   }
   .canvas-tools .clear-canvas:hover {
     color: #fff;
-    background: #6c757d;
+    background: #4b778d;
   }
   .canvas-tools .clear-canvas {
-    color: #6c757d;
-    border: 1px solid #6c757d;
-    transition: all 0.3s ease;
+    background: #4b778d;
+    border: 1px solid #4b778d;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 40px;
+    width: 110px;
+    margin-left: 3px;
   }
-  .canvas-tools .save-img {
-    background: #437e78;
-    border: 1px solid #437e78;
+  .canvas-tools .canvas-tools-buttons {
+    background: #4b778d;
+    border: 1px solid #4b778d;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 40px;
+    width: 50px;
+    margin-left: 6px;
+    margin-right: 6px;
   }
+
   .size-slider {
     width: 100%;
     height: 5px;
