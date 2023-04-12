@@ -11,6 +11,8 @@
   import { selectedShape, selectedStroke, shape, stroke } from "./stores";
   export let brushsize; //brush size
   export let color; //brush color
+  export let isErasing;
+  console.log("start", isErasing);
 
   $: hex = color.toHex8String(); //changing the color value to hex format
 
@@ -18,6 +20,9 @@
   let context;
   let isDrawing = false;
   let prevMouseX, prevMouseY, snapshot;
+  let undoStack = [];
+  let redoStack = [];
+  let scale = 1;
 
   const setCanvasBackground = () => {
     // setting canvas to the original background color
@@ -46,10 +51,11 @@
   const handleStart = (e) => {
     e.preventDefault();
     isDrawing = true;
-    prevMouseX = e.offsetX; // passing current mouseX position as prevMouseX value
-    prevMouseY = e.offsetY; // passing current mouseY position as prevMouseY value
+    prevMouseX = e.offsetX / scale; // passing current mouseX position as prevMouseX value
+    prevMouseY = e.offsetY / scale; // passing current mouseY position as prevMouseY value
     context.beginPath();
     snapshot = context.getImageData(0, 0, canvas.width, canvas.height);
+    undoStack.push(context.getImageData(0, 0, canvas.width, canvas.height));
   };
 
   const handleEnd = () => {
@@ -61,45 +67,88 @@
     if (!isDrawing) return;
     context.putImageData(snapshot, 0, 0); // adding copied canvas data on to this canvas
     //if condition to select a shape or stroke
-    if ($selectedShape === "rectangle" && $stroke === false) {
-      drawRect(e, context, prevMouseX, prevMouseY);
-    } else if ($selectedShape === "triangle" && $stroke === false) {
-      drawTriangle(e, context, prevMouseX, prevMouseY);
-    } else if ($selectedShape === "circle" && $stroke === false) {
-      drawCircle(e, context, prevMouseX, prevMouseY);
-    } else if ($selectedShape === "hexagon" && $stroke === false) {
-      drawHexagon(e, context, prevMouseX, prevMouseY);
-    } else if ($selectedShape === "ellipse" && $stroke === false) {
-      drawEllipse(e, context, prevMouseX, prevMouseY);
-    } else if ($selectedStroke === "line" && $shape === false) {
-      drawLine(e, context, prevMouseX, prevMouseY);
-    } else if ($selectedStroke === "pen" && $shape === false) {
-      pen(e, context);
-    } else if ($selectedStroke === "gradientLine" && $shape === false) {
-      gradientLine(e, context, hex);
-      context.strokeStyle = hex;
-    } else if ($selectedStroke === "dashedLine" && $shape === false) {
-      dashedLline(e, context);
-      context.setLineDash([]);
+    if (isErasing) {
+      console.log("if", isErasing);
+      context.strokeStyle = "#fffbeb";
+      context.lineTo(e.offsetX, e.offsetY);
+      context.stroke();
     } else {
-      console.log("not a valid stroke or shape selected");
+      if ($selectedShape === "rectangle" && $stroke === false) {
+        drawRect(e, context, prevMouseX, prevMouseY);
+      } else if ($selectedShape === "triangle" && $stroke === false) {
+        drawTriangle(e, context, prevMouseX, prevMouseY);
+      } else if ($selectedShape === "circle" && $stroke === false) {
+        drawCircle(e, context, prevMouseX, prevMouseY);
+      } else if ($selectedShape === "hexagon" && $stroke === false) {
+        drawHexagon(e, context, prevMouseX, prevMouseY);
+      } else if ($selectedShape === "ellipse" && $stroke === false) {
+        drawEllipse(e, context, prevMouseX, prevMouseY);
+      } else if ($selectedStroke === "line" && $shape === false) {
+        drawLine(e, context, prevMouseX, prevMouseY);
+      } else if ($selectedStroke === "pen" && $shape === false) {
+        pen(e, context);
+      } else if ($selectedStroke === "gradientLine" && $shape === false) {
+        gradientLine(e, context, hex);
+        context.strokeStyle = hex;
+      } else if ($selectedStroke === "dashedLine" && $shape === false) {
+        dashedLline(e, context);
+        context.setLineDash([]);
+      } else {
+        console.log("not a valid stroke or shape selected");
+      }
     }
   };
 
-  //clear canvas function
-
+  //clear canvas
   export const handleClear = () => {
     context.clearRect(0, 0, canvas.width, canvas.height);
-    setCanvasBackground();
+    undoStack = [];
+    redoStack = [];
   };
 
   //Save the canvas
-
   export const handleSave = () => {
     const link = document.createElement("a"); // creating <a> element
     link.href = canvas.toDataURL("image/jpeg"); // passing canvasData as link href value
     link.download = "canvas.jpg";
     link.click(); // clicking link to download image
+  };
+
+  export const handleShare = () => {};
+
+  //zoom in function
+  export const handleZoomIn = () => {
+    scale += 0.1;
+    canvas.style.transform = `scale(${scale})`;
+  };
+
+  //zoom out function
+  export const handleZoomOut = () => {
+    if (scale > 0.1) {
+      scale -= 0.1;
+      canvas.style.transform = `scale(${scale})`;
+    }
+  };
+
+  //Undo function
+  export const handleUndo = () => {
+    if (undoStack.length > 0) {
+      redoStack.push(context.getImageData(0, 0, canvas.width, canvas.height));
+      context.putImageData(undoStack.pop(), 0, 0);
+    }
+  };
+
+  //Redo function
+  export const handleRedo = () => {
+    if (redoStack.length > 0) {
+      undoStack.push(context.getImageData(0, 0, canvas.width, canvas.height));
+      context.putImageData(redoStack.pop(), 0, 0);
+    }
+  };
+
+  //to set the erase value to true
+  export const handleErase = () => {
+    isErasing = true;
   };
 </script>
 
@@ -115,7 +164,7 @@
 <!-- STYLING -->
 <style>
   canvas {
-    background-color: beige;
+    background-color: #fffbeb;
     width: 100%;
     height: 100%;
   }

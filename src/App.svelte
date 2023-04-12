@@ -5,8 +5,15 @@
 
   let color = new Color("#ff3d91"); //creating a color object
   let brushsize = 1; //size of brush
+  let isErasing = false;
   let handleClear; //to clear canvas
   let handleSave; //to save the canvas as image
+  let handleShare;
+  let handleZoomIn; //to zoom in
+  let handleZoomOut; //to zoom out
+  let handleUndo; //to undo
+  let handleRedo; //to redo
+  let handleErase;
 </script>
 
 <body>
@@ -14,7 +21,19 @@
     <!-- Painting Section -->
     <section class="canvas">
       <!-- Canvas -->
-      <Canvas {color} {brushsize} bind:handleClear bind:handleSave />
+      <Canvas
+        {color}
+        {brushsize}
+        {isErasing}
+        bind:handleClear
+        bind:handleSave
+        bind:handleShare
+        bind:handleZoomIn
+        bind:handleZoomOut
+        bind:handleRedo
+        bind:handleUndo
+        bind:handleErase
+      />
     </section>
     <!-- Toolbox Section -->
     <section class="toolbox">
@@ -23,27 +42,27 @@
         <button class="canvas-tools-buttons" on:click={handleSave}>
           <span class="material-symbols-rounded"> download</span>
         </button>
-        <button class="canvas-tools-buttons">
+        <button class="canvas-tools-buttons" on:click={handleShare}>
           <span class="material-symbols-rounded"> share </span>
         </button>
-        <button class="canvas-tools-buttons">
+        <button class="canvas-tools-buttons" on:click={handleZoomIn}>
           <span class="material-symbols-rounded"> zoom_in</span>
         </button>
-        <button class="canvas-tools-buttons">
+        <button class="canvas-tools-buttons" on:click={handleZoomOut}>
           <span class="material-symbols-rounded"> zoom_out </span>
         </button>
       </div>
       <div class="canvas-tools">
         <button class="canvas-tools-buttons" on:click={handleClear}>
-          <span class="material-symbols-rounded"> save </span>
+          <span class="material-symbols-rounded"> refresh </span>
         </button>
-        <button class="canvas-tools-buttons">
-          <span class="material-symbols-rounded"> share </span>
+        <button class="canvas-tools-buttons" on:click={handleErase}>
+          <span class="material-symbols-rounded"> auto_fix_normal </span>
         </button>
-        <button class="canvas-tools-buttons">
+        <button class="canvas-tools-buttons" on:click={handleUndo}>
           <span class="material-symbols-rounded"> undo </span>
         </button>
-        <button class="canvas-tools-buttons">
+        <button class="canvas-tools-buttons" on:click={handleRedo}>
           <span class="material-symbols-rounded"> redo </span>
         </button>
       </div>
@@ -101,10 +120,7 @@
     display: flex;
     flex-direction: row;
   }
-  .eraser-tools {
-    display: flex;
-    flex-direction: row;
-  }
+
   section.canvas {
     left: 0;
     width: calc(100vw - 180px);
@@ -136,11 +152,11 @@
     border-radius: 4px;
     cursor: pointer;
   }
-  .canvas-tools .clear-canvas:hover {
+  .canvas-tools .canvas-tools-buttons:hover {
     color: #fff;
     background: #4b778d;
   }
-  .canvas-tools .clear-canvas {
+  .canvas-tools .canvas-tools-buttons {
     background: #4b778d;
     border: 1px solid #4b778d;
     display: flex;

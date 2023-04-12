@@ -822,15 +822,15 @@ var app = (function () {
     	const block = {
     		c: function create() {
     			canvas_1 = element("canvas");
-    			attr_dev(canvas_1, "class", "svelte-15puylx");
-    			add_location(canvas_1, file$6, 107, 0, 3649);
+    			attr_dev(canvas_1, "class", "svelte-vcup0j");
+    			add_location(canvas_1, file$6, 156, 0, 4986);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, canvas_1, anchor);
-    			/*canvas_1_binding*/ ctx[10](canvas_1);
+    			/*canvas_1_binding*/ ctx[17](canvas_1);
 
     			if (!mounted) {
     				dispose = [
@@ -847,7 +847,7 @@ var app = (function () {
     		o: noop,
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(canvas_1);
-    			/*canvas_1_binding*/ ctx[10](null);
+    			/*canvas_1_binding*/ ctx[17](null);
     			mounted = false;
     			run_all(dispose);
     		}
@@ -871,25 +871,30 @@ var app = (function () {
     	let $stroke;
     	let $selectedShape;
     	validate_store(shape, 'shape');
-    	component_subscribe($$self, shape, $$value => $$invalidate(15, $shape = $$value));
+    	component_subscribe($$self, shape, $$value => $$invalidate(25, $shape = $$value));
     	validate_store(selectedStroke, 'selectedStroke');
-    	component_subscribe($$self, selectedStroke, $$value => $$invalidate(16, $selectedStroke = $$value));
+    	component_subscribe($$self, selectedStroke, $$value => $$invalidate(26, $selectedStroke = $$value));
     	validate_store(stroke, 'stroke');
-    	component_subscribe($$self, stroke, $$value => $$invalidate(17, $stroke = $$value));
+    	component_subscribe($$self, stroke, $$value => $$invalidate(27, $stroke = $$value));
     	validate_store(selectedShape, 'selectedShape');
-    	component_subscribe($$self, selectedShape, $$value => $$invalidate(18, $selectedShape = $$value));
+    	component_subscribe($$self, selectedShape, $$value => $$invalidate(28, $selectedShape = $$value));
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots('Canvas', slots, []);
     	let { brushsize } = $$props;
     	let { color } = $$props;
+    	let { isErasing } = $$props;
+    	console.log("start", isErasing);
     	let canvas;
     	let context;
     	let isDrawing = false;
     	let prevMouseX, prevMouseY, snapshot;
+    	let undoStack = [];
+    	let redoStack = [];
+    	let scale = 1;
 
     	const setCanvasBackground = () => {
     		// setting canvas to the original background color
-    		$$invalidate(8, context.fillStyle = "#fffbeb", context);
+    		$$invalidate(15, context.fillStyle = "#fffbeb", context);
 
     		context.fillRect(0, 0, canvas.width, canvas.height);
     	};
@@ -903,16 +908,17 @@ var app = (function () {
     	});
 
     	onMount(() => {
-    		$$invalidate(8, context = canvas.getContext("2d"));
+    		$$invalidate(15, context = canvas.getContext("2d"));
     	});
 
     	const handleStart = e => {
     		e.preventDefault();
     		isDrawing = true;
-    		prevMouseX = e.offsetX; // passing current mouseX position as prevMouseX value
-    		prevMouseY = e.offsetY; // passing current mouseY position as prevMouseY value
+    		prevMouseX = e.offsetX / scale; // passing current mouseX position as prevMouseX value
+    		prevMouseY = e.offsetY / scale; // passing current mouseY position as prevMouseY value
     		context.beginPath();
     		snapshot = context.getImageData(0, 0, canvas.width, canvas.height);
+    		undoStack.push(context.getImageData(0, 0, canvas.width, canvas.height));
     	};
 
     	const handleEnd = () => {
@@ -925,34 +931,42 @@ var app = (function () {
     		context.putImageData(snapshot, 0, 0); // adding copied canvas data on to this canvas
 
     		//if condition to select a shape or stroke
-    		if ($selectedShape === "rectangle" && $stroke === false) {
-    			drawRect(e, context, prevMouseX, prevMouseY);
-    		} else if ($selectedShape === "triangle" && $stroke === false) {
-    			drawTriangle(e, context, prevMouseX, prevMouseY);
-    		} else if ($selectedShape === "circle" && $stroke === false) {
-    			drawCircle(e, context, prevMouseX, prevMouseY);
-    		} else if ($selectedShape === "hexagon" && $stroke === false) {
-    			drawHexagon(e, context, prevMouseX, prevMouseY);
-    		} else if ($selectedShape === "ellipse" && $stroke === false) {
-    			drawEllipse(e, context, prevMouseX, prevMouseY);
-    		} else if ($selectedStroke === "line" && $shape === false) {
-    			drawLine(e, context, prevMouseX, prevMouseY);
-    		} else if ($selectedStroke === "pen" && $shape === false) {
-    			pen(e, context);
-    		} else if ($selectedStroke === "gradientLine" && $shape === false) {
-    			gradientLine(e, context, hex);
-    			$$invalidate(8, context.strokeStyle = hex, context);
-    		} else if ($selectedStroke === "dashedLine" && $shape === false) {
-    			dashedLline(e, context);
-    			context.setLineDash([]);
+    		if (isErasing) {
+    			console.log("if", isErasing);
+    			$$invalidate(15, context.strokeStyle = "#fffbeb", context);
+    			context.lineTo(e.offsetX, e.offsetY);
+    			context.stroke();
     		} else {
-    			console.log("not a valid stroke or shape selected");
+    			if ($selectedShape === "rectangle" && $stroke === false) {
+    				drawRect(e, context, prevMouseX, prevMouseY);
+    			} else if ($selectedShape === "triangle" && $stroke === false) {
+    				drawTriangle(e, context, prevMouseX, prevMouseY);
+    			} else if ($selectedShape === "circle" && $stroke === false) {
+    				drawCircle(e, context, prevMouseX, prevMouseY);
+    			} else if ($selectedShape === "hexagon" && $stroke === false) {
+    				drawHexagon(e, context, prevMouseX, prevMouseY);
+    			} else if ($selectedShape === "ellipse" && $stroke === false) {
+    				drawEllipse(e, context, prevMouseX, prevMouseY);
+    			} else if ($selectedStroke === "line" && $shape === false) {
+    				drawLine(e, context, prevMouseX, prevMouseY);
+    			} else if ($selectedStroke === "pen" && $shape === false) {
+    				pen(e, context);
+    			} else if ($selectedStroke === "gradientLine" && $shape === false) {
+    				gradientLine(e, context, hex);
+    				$$invalidate(15, context.strokeStyle = hex, context);
+    			} else if ($selectedStroke === "dashedLine" && $shape === false) {
+    				dashedLline(e, context);
+    				context.setLineDash([]);
+    			} else {
+    				console.log("not a valid stroke or shape selected");
+    			}
     		}
     	};
 
     	const handleClear = () => {
     		context.clearRect(0, 0, canvas.width, canvas.height);
-    		setCanvasBackground();
+    		undoStack = [];
+    		redoStack = [];
     	};
 
     	const handleSave = () => {
@@ -960,6 +974,40 @@ var app = (function () {
     		link.href = canvas.toDataURL("image/jpeg"); // passing canvasData as link href value
     		link.download = "canvas.jpg";
     		link.click(); // clicking link to download image
+    	};
+
+    	const handleShare = () => {
+    		
+    	};
+
+    	const handleZoomIn = () => {
+    		scale += 0.1;
+    		$$invalidate(0, canvas.style.transform = `scale(${scale})`, canvas);
+    	};
+
+    	const handleZoomOut = () => {
+    		if (scale > 0.1) {
+    			scale -= 0.1;
+    			$$invalidate(0, canvas.style.transform = `scale(${scale})`, canvas);
+    		}
+    	};
+
+    	const handleUndo = () => {
+    		if (undoStack.length > 0) {
+    			redoStack.push(context.getImageData(0, 0, canvas.width, canvas.height));
+    			context.putImageData(undoStack.pop(), 0, 0);
+    		}
+    	};
+
+    	const handleRedo = () => {
+    		if (redoStack.length > 0) {
+    			undoStack.push(context.getImageData(0, 0, canvas.width, canvas.height));
+    			context.putImageData(redoStack.pop(), 0, 0);
+    		}
+    	};
+
+    	const handleErase = () => {
+    		$$invalidate(4, isErasing = true);
     	};
 
     	$$self.$$.on_mount.push(function () {
@@ -970,9 +1018,13 @@ var app = (function () {
     		if (color === undefined && !('color' in $$props || $$self.$$.bound[$$self.$$.props['color']])) {
     			console_1.warn("<Canvas> was created without expected prop 'color'");
     		}
+
+    		if (isErasing === undefined && !('isErasing' in $$props || $$self.$$.bound[$$self.$$.props['isErasing']])) {
+    			console_1.warn("<Canvas> was created without expected prop 'isErasing'");
+    		}
     	});
 
-    	const writable_props = ['brushsize', 'color'];
+    	const writable_props = ['brushsize', 'color', 'isErasing'];
 
     	Object.keys($$props).forEach(key => {
     		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console_1.warn(`<Canvas> was created with unknown prop '${key}'`);
@@ -986,8 +1038,9 @@ var app = (function () {
     	}
 
     	$$self.$$set = $$props => {
-    		if ('brushsize' in $$props) $$invalidate(4, brushsize = $$props.brushsize);
-    		if ('color' in $$props) $$invalidate(5, color = $$props.color);
+    		if ('brushsize' in $$props) $$invalidate(5, brushsize = $$props.brushsize);
+    		if ('color' in $$props) $$invalidate(6, color = $$props.color);
+    		if ('isErasing' in $$props) $$invalidate(4, isErasing = $$props.isErasing);
     	};
 
     	$$self.$capture_state = () => ({
@@ -1007,18 +1060,28 @@ var app = (function () {
     		stroke,
     		brushsize,
     		color,
+    		isErasing,
     		canvas,
     		context,
     		isDrawing,
     		prevMouseX,
     		prevMouseY,
     		snapshot,
+    		undoStack,
+    		redoStack,
+    		scale,
     		setCanvasBackground,
     		handleStart,
     		handleEnd,
     		handleMove,
     		handleClear,
     		handleSave,
+    		handleShare,
+    		handleZoomIn,
+    		handleZoomOut,
+    		handleUndo,
+    		handleRedo,
+    		handleErase,
     		hex,
     		$shape,
     		$selectedStroke,
@@ -1027,15 +1090,19 @@ var app = (function () {
     	});
 
     	$$self.$inject_state = $$props => {
-    		if ('brushsize' in $$props) $$invalidate(4, brushsize = $$props.brushsize);
-    		if ('color' in $$props) $$invalidate(5, color = $$props.color);
+    		if ('brushsize' in $$props) $$invalidate(5, brushsize = $$props.brushsize);
+    		if ('color' in $$props) $$invalidate(6, color = $$props.color);
+    		if ('isErasing' in $$props) $$invalidate(4, isErasing = $$props.isErasing);
     		if ('canvas' in $$props) $$invalidate(0, canvas = $$props.canvas);
-    		if ('context' in $$props) $$invalidate(8, context = $$props.context);
+    		if ('context' in $$props) $$invalidate(15, context = $$props.context);
     		if ('isDrawing' in $$props) isDrawing = $$props.isDrawing;
     		if ('prevMouseX' in $$props) prevMouseX = $$props.prevMouseX;
     		if ('prevMouseY' in $$props) prevMouseY = $$props.prevMouseY;
     		if ('snapshot' in $$props) snapshot = $$props.snapshot;
-    		if ('hex' in $$props) $$invalidate(9, hex = $$props.hex);
+    		if ('undoStack' in $$props) undoStack = $$props.undoStack;
+    		if ('redoStack' in $$props) redoStack = $$props.redoStack;
+    		if ('scale' in $$props) scale = $$props.scale;
+    		if ('hex' in $$props) $$invalidate(16, hex = $$props.hex);
     	};
 
     	if ($$props && "$$inject" in $$props) {
@@ -1043,17 +1110,17 @@ var app = (function () {
     	}
 
     	$$self.$$.update = () => {
-    		if ($$self.$$.dirty & /*color*/ 32) {
-    			$$invalidate(9, hex = color.toHex8String()); //changing the color value to hex format
+    		if ($$self.$$.dirty & /*color*/ 64) {
+    			$$invalidate(16, hex = color.toHex8String()); //changing the color value to hex format
     		}
 
-    		if ($$self.$$.dirty & /*context, hex, brushsize*/ 784) {
+    		if ($$self.$$.dirty & /*context, hex, brushsize*/ 98336) {
     			//when the color or size changes this statement will run
     			if (context) {
-    				$$invalidate(8, context.strokeStyle = hex, context); //changing color
-    				$$invalidate(8, context.lineWidth = brushsize, context); //changing size
-    				$$invalidate(8, context.lineCap = "round", context); //change brush shape
-    				$$invalidate(8, context.lineJoin = "round", context); //change brush shape
+    				$$invalidate(15, context.strokeStyle = hex, context); //changing color
+    				$$invalidate(15, context.lineWidth = brushsize, context); //changing size
+    				$$invalidate(15, context.lineCap = "round", context); //change brush shape
+    				$$invalidate(15, context.lineJoin = "round", context); //change brush shape
     			}
     		}
     	};
@@ -1063,10 +1130,17 @@ var app = (function () {
     		handleStart,
     		handleEnd,
     		handleMove,
+    		isErasing,
     		brushsize,
     		color,
     		handleClear,
     		handleSave,
+    		handleShare,
+    		handleZoomIn,
+    		handleZoomOut,
+    		handleUndo,
+    		handleRedo,
+    		handleErase,
     		context,
     		hex,
     		canvas_1_binding
@@ -1078,10 +1152,17 @@ var app = (function () {
     		super(options);
 
     		init(this, options, instance$8, create_fragment$8, safe_not_equal, {
-    			brushsize: 4,
-    			color: 5,
-    			handleClear: 6,
-    			handleSave: 7
+    			brushsize: 5,
+    			color: 6,
+    			isErasing: 4,
+    			handleClear: 7,
+    			handleSave: 8,
+    			handleShare: 9,
+    			handleZoomIn: 10,
+    			handleZoomOut: 11,
+    			handleUndo: 12,
+    			handleRedo: 13,
+    			handleErase: 14
     		});
 
     		dispatch_dev("SvelteRegisterComponent", {
@@ -1108,8 +1189,16 @@ var app = (function () {
     		throw new Error("<Canvas>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
     	}
 
+    	get isErasing() {
+    		throw new Error("<Canvas>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set isErasing(value) {
+    		throw new Error("<Canvas>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
     	get handleClear() {
-    		return this.$$.ctx[6];
+    		return this.$$.ctx[7];
     	}
 
     	set handleClear(value) {
@@ -1117,10 +1206,58 @@ var app = (function () {
     	}
 
     	get handleSave() {
-    		return this.$$.ctx[7];
+    		return this.$$.ctx[8];
     	}
 
     	set handleSave(value) {
+    		throw new Error("<Canvas>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get handleShare() {
+    		return this.$$.ctx[9];
+    	}
+
+    	set handleShare(value) {
+    		throw new Error("<Canvas>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get handleZoomIn() {
+    		return this.$$.ctx[10];
+    	}
+
+    	set handleZoomIn(value) {
+    		throw new Error("<Canvas>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get handleZoomOut() {
+    		return this.$$.ctx[11];
+    	}
+
+    	set handleZoomOut(value) {
+    		throw new Error("<Canvas>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get handleUndo() {
+    		return this.$$.ctx[12];
+    	}
+
+    	set handleUndo(value) {
+    		throw new Error("<Canvas>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get handleRedo() {
+    		return this.$$.ctx[13];
+    	}
+
+    	set handleRedo(value) {
+    		throw new Error("<Canvas>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get handleErase() {
+    		return this.$$.ctx[14];
+    	}
+
+    	set handleErase(value) {
     		throw new Error("<Canvas>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
     	}
     }
@@ -4359,6 +4496,12 @@ var app = (function () {
     	let canvas;
     	let updating_handleClear;
     	let updating_handleSave;
+    	let updating_handleShare;
+    	let updating_handleZoomIn;
+    	let updating_handleZoomOut;
+    	let updating_handleRedo;
+    	let updating_handleUndo;
+    	let updating_handleErase;
     	let t0;
     	let section1;
     	let h20;
@@ -4407,16 +4550,41 @@ var app = (function () {
     	let dispose;
 
     	function canvas_handleClear_binding(value) {
-    		/*canvas_handleClear_binding*/ ctx[4](value);
+    		/*canvas_handleClear_binding*/ ctx[11](value);
     	}
 
     	function canvas_handleSave_binding(value) {
-    		/*canvas_handleSave_binding*/ ctx[5](value);
+    		/*canvas_handleSave_binding*/ ctx[12](value);
+    	}
+
+    	function canvas_handleShare_binding(value) {
+    		/*canvas_handleShare_binding*/ ctx[13](value);
+    	}
+
+    	function canvas_handleZoomIn_binding(value) {
+    		/*canvas_handleZoomIn_binding*/ ctx[14](value);
+    	}
+
+    	function canvas_handleZoomOut_binding(value) {
+    		/*canvas_handleZoomOut_binding*/ ctx[15](value);
+    	}
+
+    	function canvas_handleRedo_binding(value) {
+    		/*canvas_handleRedo_binding*/ ctx[16](value);
+    	}
+
+    	function canvas_handleUndo_binding(value) {
+    		/*canvas_handleUndo_binding*/ ctx[17](value);
+    	}
+
+    	function canvas_handleErase_binding(value) {
+    		/*canvas_handleErase_binding*/ ctx[18](value);
     	}
 
     	let canvas_props = {
     		color: /*color*/ ctx[0],
-    		brushsize: /*brushsize*/ ctx[1]
+    		brushsize: /*brushsize*/ ctx[1],
+    		isErasing: /*isErasing*/ ctx[10]
     	};
 
     	if (/*handleClear*/ ctx[2] !== void 0) {
@@ -4427,13 +4595,43 @@ var app = (function () {
     		canvas_props.handleSave = /*handleSave*/ ctx[3];
     	}
 
+    	if (/*handleShare*/ ctx[4] !== void 0) {
+    		canvas_props.handleShare = /*handleShare*/ ctx[4];
+    	}
+
+    	if (/*handleZoomIn*/ ctx[5] !== void 0) {
+    		canvas_props.handleZoomIn = /*handleZoomIn*/ ctx[5];
+    	}
+
+    	if (/*handleZoomOut*/ ctx[6] !== void 0) {
+    		canvas_props.handleZoomOut = /*handleZoomOut*/ ctx[6];
+    	}
+
+    	if (/*handleRedo*/ ctx[8] !== void 0) {
+    		canvas_props.handleRedo = /*handleRedo*/ ctx[8];
+    	}
+
+    	if (/*handleUndo*/ ctx[7] !== void 0) {
+    		canvas_props.handleUndo = /*handleUndo*/ ctx[7];
+    	}
+
+    	if (/*handleErase*/ ctx[9] !== void 0) {
+    		canvas_props.handleErase = /*handleErase*/ ctx[9];
+    	}
+
     	canvas = new Canvas({ props: canvas_props, $$inline: true });
     	binding_callbacks.push(() => bind(canvas, 'handleClear', canvas_handleClear_binding));
     	binding_callbacks.push(() => bind(canvas, 'handleSave', canvas_handleSave_binding));
+    	binding_callbacks.push(() => bind(canvas, 'handleShare', canvas_handleShare_binding));
+    	binding_callbacks.push(() => bind(canvas, 'handleZoomIn', canvas_handleZoomIn_binding));
+    	binding_callbacks.push(() => bind(canvas, 'handleZoomOut', canvas_handleZoomOut_binding));
+    	binding_callbacks.push(() => bind(canvas, 'handleRedo', canvas_handleRedo_binding));
+    	binding_callbacks.push(() => bind(canvas, 'handleUndo', canvas_handleUndo_binding));
+    	binding_callbacks.push(() => bind(canvas, 'handleErase', canvas_handleErase_binding));
     	tools = new Tools({ $$inline: true });
 
     	function colorinput_color_binding(value) {
-    		/*colorinput_color_binding*/ ctx[6](value);
+    		/*colorinput_color_binding*/ ctx[19](value);
     	}
 
     	let colorinput_props = { showAlphaSlider: true };
@@ -4476,11 +4674,11 @@ var app = (function () {
     			div1 = element("div");
     			button4 = element("button");
     			span4 = element("span");
-    			span4.textContent = "save";
+    			span4.textContent = "refresh";
     			t12 = space();
     			button5 = element("button");
     			span5 = element("span");
-    			span5.textContent = "share";
+    			span5.textContent = "auto_fix_normal";
     			t14 = space();
     			button6 = element("button");
     			span6 = element("span");
@@ -4504,67 +4702,67 @@ var app = (function () {
     			div4 = element("div");
     			h22 = element("h2");
     			h22.textContent = "Background";
-    			attr_dev(section0, "class", "canvas svelte-h6usbe");
-    			add_location(section0, file, 14, 4, 446);
-    			attr_dev(h20, "class", "svelte-h6usbe");
-    			add_location(h20, file, 20, 6, 643);
+    			attr_dev(section0, "class", "canvas svelte-zlqz3u");
+    			add_location(section0, file, 21, 4, 633);
+    			attr_dev(h20, "class", "svelte-zlqz3u");
+    			add_location(h20, file, 39, 6, 1039);
     			attr_dev(span0, "class", "material-symbols-rounded");
-    			add_location(span0, file, 23, 10, 770);
-    			attr_dev(button0, "class", "canvas-tools-buttons svelte-h6usbe");
-    			add_location(button0, file, 22, 8, 700);
+    			add_location(span0, file, 42, 10, 1166);
+    			attr_dev(button0, "class", "canvas-tools-buttons svelte-zlqz3u");
+    			add_location(button0, file, 41, 8, 1096);
     			attr_dev(span1, "class", "material-symbols-rounded");
-    			add_location(span1, file, 26, 10, 900);
-    			attr_dev(button1, "class", "canvas-tools-buttons svelte-h6usbe");
-    			add_location(button1, file, 25, 8, 852);
+    			add_location(span1, file, 45, 10, 1319);
+    			attr_dev(button1, "class", "canvas-tools-buttons svelte-zlqz3u");
+    			add_location(button1, file, 44, 8, 1248);
     			attr_dev(span2, "class", "material-symbols-rounded");
-    			add_location(span2, file, 29, 10, 1028);
-    			attr_dev(button2, "class", "canvas-tools-buttons svelte-h6usbe");
-    			add_location(button2, file, 28, 8, 980);
+    			add_location(span2, file, 48, 10, 1471);
+    			attr_dev(button2, "class", "canvas-tools-buttons svelte-zlqz3u");
+    			add_location(button2, file, 47, 8, 1399);
     			attr_dev(span3, "class", "material-symbols-rounded");
-    			add_location(span3, file, 32, 10, 1157);
-    			attr_dev(button3, "class", "canvas-tools-buttons svelte-h6usbe");
-    			add_location(button3, file, 31, 8, 1109);
-    			attr_dev(div0, "class", "canvas-tools svelte-h6usbe");
-    			add_location(div0, file, 21, 6, 665);
+    			add_location(span3, file, 51, 10, 1625);
+    			attr_dev(button3, "class", "canvas-tools-buttons svelte-zlqz3u");
+    			add_location(button3, file, 50, 8, 1552);
+    			attr_dev(div0, "class", "canvas-tools svelte-zlqz3u");
+    			add_location(div0, file, 40, 6, 1061);
     			attr_dev(span4, "class", "material-symbols-rounded");
-    			add_location(span4, file, 37, 10, 1357);
-    			attr_dev(button4, "class", "canvas-tools-buttons svelte-h6usbe");
-    			add_location(button4, file, 36, 8, 1286);
+    			add_location(span4, file, 56, 10, 1825);
+    			attr_dev(button4, "class", "canvas-tools-buttons svelte-zlqz3u");
+    			add_location(button4, file, 55, 8, 1754);
     			attr_dev(span5, "class", "material-symbols-rounded");
-    			add_location(span5, file, 40, 10, 1484);
-    			attr_dev(button5, "class", "canvas-tools-buttons svelte-h6usbe");
-    			add_location(button5, file, 39, 8, 1436);
+    			add_location(span5, file, 59, 10, 1978);
+    			attr_dev(button5, "class", "canvas-tools-buttons svelte-zlqz3u");
+    			add_location(button5, file, 58, 8, 1907);
     			attr_dev(span6, "class", "material-symbols-rounded");
-    			add_location(span6, file, 43, 10, 1612);
-    			attr_dev(button6, "class", "canvas-tools-buttons svelte-h6usbe");
-    			add_location(button6, file, 42, 8, 1564);
+    			add_location(span6, file, 62, 10, 2138);
+    			attr_dev(button6, "class", "canvas-tools-buttons svelte-zlqz3u");
+    			add_location(button6, file, 61, 8, 2068);
     			attr_dev(span7, "class", "material-symbols-rounded");
-    			add_location(span7, file, 46, 10, 1739);
-    			attr_dev(button7, "class", "canvas-tools-buttons svelte-h6usbe");
-    			add_location(button7, file, 45, 8, 1691);
-    			attr_dev(div1, "class", "canvas-tools svelte-h6usbe");
-    			add_location(div1, file, 35, 6, 1251);
-    			attr_dev(div2, "class", "painting-tools svelte-h6usbe");
-    			add_location(div2, file, 50, 6, 1830);
-    			attr_dev(h21, "class", "svelte-h6usbe");
-    			add_location(h21, file, 55, 8, 1932);
-    			attr_dev(input, "class", "size-slider svelte-h6usbe");
+    			add_location(span7, file, 65, 10, 2287);
+    			attr_dev(button7, "class", "canvas-tools-buttons svelte-zlqz3u");
+    			add_location(button7, file, 64, 8, 2217);
+    			attr_dev(div1, "class", "canvas-tools svelte-zlqz3u");
+    			add_location(div1, file, 54, 6, 1719);
+    			attr_dev(div2, "class", "painting-tools svelte-zlqz3u");
+    			add_location(div2, file, 69, 6, 2378);
+    			attr_dev(h21, "class", "svelte-zlqz3u");
+    			add_location(h21, file, 74, 8, 2480);
+    			attr_dev(input, "class", "size-slider svelte-zlqz3u");
     			attr_dev(input, "type", "range");
     			attr_dev(input, "min", "0");
     			attr_dev(input, "max", "100");
-    			add_location(input, file, 59, 8, 2064);
-    			attr_dev(div3, "class", "styles-tools svelte-h6usbe");
-    			add_location(div3, file, 54, 6, 1897);
-    			attr_dev(h22, "class", "svelte-h6usbe");
-    			add_location(h22, file, 69, 8, 2265);
-    			attr_dev(div4, "class", "background-tools svelte-h6usbe");
-    			add_location(div4, file, 68, 6, 2226);
-    			attr_dev(section1, "class", "toolbox svelte-h6usbe");
-    			add_location(section1, file, 19, 4, 611);
+    			add_location(input, file, 78, 8, 2612);
+    			attr_dev(div3, "class", "styles-tools svelte-zlqz3u");
+    			add_location(div3, file, 73, 6, 2445);
+    			attr_dev(h22, "class", "svelte-zlqz3u");
+    			add_location(h22, file, 88, 8, 2813);
+    			attr_dev(div4, "class", "background-tools svelte-zlqz3u");
+    			add_location(div4, file, 87, 6, 2774);
+    			attr_dev(section1, "class", "toolbox svelte-zlqz3u");
+    			add_location(section1, file, 38, 4, 1007);
     			attr_dev(div5, "class", "container");
-    			add_location(div5, file, 12, 2, 388);
-    			attr_dev(body, "class", "svelte-h6usbe");
-    			add_location(body, file, 11, 0, 379);
+    			add_location(div5, file, 19, 2, 575);
+    			attr_dev(body, "class", "svelte-zlqz3u");
+    			add_location(body, file, 18, 0, 566);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -4633,6 +4831,39 @@ var app = (function () {
     						false
     					),
     					listen_dev(
+    						button1,
+    						"click",
+    						function () {
+    							if (is_function(/*handleShare*/ ctx[4])) /*handleShare*/ ctx[4].apply(this, arguments);
+    						},
+    						false,
+    						false,
+    						false,
+    						false
+    					),
+    					listen_dev(
+    						button2,
+    						"click",
+    						function () {
+    							if (is_function(/*handleZoomIn*/ ctx[5])) /*handleZoomIn*/ ctx[5].apply(this, arguments);
+    						},
+    						false,
+    						false,
+    						false,
+    						false
+    					),
+    					listen_dev(
+    						button3,
+    						"click",
+    						function () {
+    							if (is_function(/*handleZoomOut*/ ctx[6])) /*handleZoomOut*/ ctx[6].apply(this, arguments);
+    						},
+    						false,
+    						false,
+    						false,
+    						false
+    					),
+    					listen_dev(
     						button4,
     						"click",
     						function () {
@@ -4643,8 +4874,41 @@ var app = (function () {
     						false,
     						false
     					),
-    					listen_dev(input, "change", /*input_change_input_handler*/ ctx[7]),
-    					listen_dev(input, "input", /*input_change_input_handler*/ ctx[7])
+    					listen_dev(
+    						button5,
+    						"click",
+    						function () {
+    							if (is_function(/*handleErase*/ ctx[9])) /*handleErase*/ ctx[9].apply(this, arguments);
+    						},
+    						false,
+    						false,
+    						false,
+    						false
+    					),
+    					listen_dev(
+    						button6,
+    						"click",
+    						function () {
+    							if (is_function(/*handleUndo*/ ctx[7])) /*handleUndo*/ ctx[7].apply(this, arguments);
+    						},
+    						false,
+    						false,
+    						false,
+    						false
+    					),
+    					listen_dev(
+    						button7,
+    						"click",
+    						function () {
+    							if (is_function(/*handleRedo*/ ctx[8])) /*handleRedo*/ ctx[8].apply(this, arguments);
+    						},
+    						false,
+    						false,
+    						false,
+    						false
+    					),
+    					listen_dev(input, "change", /*input_change_input_handler*/ ctx[20]),
+    					listen_dev(input, "input", /*input_change_input_handler*/ ctx[20])
     				];
 
     				mounted = true;
@@ -4666,6 +4930,42 @@ var app = (function () {
     				updating_handleSave = true;
     				canvas_changes.handleSave = /*handleSave*/ ctx[3];
     				add_flush_callback(() => updating_handleSave = false);
+    			}
+
+    			if (!updating_handleShare && dirty & /*handleShare*/ 16) {
+    				updating_handleShare = true;
+    				canvas_changes.handleShare = /*handleShare*/ ctx[4];
+    				add_flush_callback(() => updating_handleShare = false);
+    			}
+
+    			if (!updating_handleZoomIn && dirty & /*handleZoomIn*/ 32) {
+    				updating_handleZoomIn = true;
+    				canvas_changes.handleZoomIn = /*handleZoomIn*/ ctx[5];
+    				add_flush_callback(() => updating_handleZoomIn = false);
+    			}
+
+    			if (!updating_handleZoomOut && dirty & /*handleZoomOut*/ 64) {
+    				updating_handleZoomOut = true;
+    				canvas_changes.handleZoomOut = /*handleZoomOut*/ ctx[6];
+    				add_flush_callback(() => updating_handleZoomOut = false);
+    			}
+
+    			if (!updating_handleRedo && dirty & /*handleRedo*/ 256) {
+    				updating_handleRedo = true;
+    				canvas_changes.handleRedo = /*handleRedo*/ ctx[8];
+    				add_flush_callback(() => updating_handleRedo = false);
+    			}
+
+    			if (!updating_handleUndo && dirty & /*handleUndo*/ 128) {
+    				updating_handleUndo = true;
+    				canvas_changes.handleUndo = /*handleUndo*/ ctx[7];
+    				add_flush_callback(() => updating_handleUndo = false);
+    			}
+
+    			if (!updating_handleErase && dirty & /*handleErase*/ 512) {
+    				updating_handleErase = true;
+    				canvas_changes.handleErase = /*handleErase*/ ctx[9];
+    				add_flush_callback(() => updating_handleErase = false);
     			}
 
     			canvas.$set(canvas_changes);
@@ -4722,8 +5022,15 @@ var app = (function () {
     	validate_slots('App', slots, []);
     	let color = new Color("#ff3d91"); //creating a color object
     	let brushsize = 1; //size of brush
+    	let isErasing = false;
     	let handleClear; //to clear canvas
     	let handleSave; //to save the canvas as image
+    	let handleShare;
+    	let handleZoomIn; //to zoom in
+    	let handleZoomOut; //to zoom out
+    	let handleUndo; //to undo
+    	let handleRedo; //to redo
+    	let handleErase;
     	const writable_props = [];
 
     	Object.keys($$props).forEach(key => {
@@ -4738,6 +5045,36 @@ var app = (function () {
     	function canvas_handleSave_binding(value) {
     		handleSave = value;
     		$$invalidate(3, handleSave);
+    	}
+
+    	function canvas_handleShare_binding(value) {
+    		handleShare = value;
+    		$$invalidate(4, handleShare);
+    	}
+
+    	function canvas_handleZoomIn_binding(value) {
+    		handleZoomIn = value;
+    		$$invalidate(5, handleZoomIn);
+    	}
+
+    	function canvas_handleZoomOut_binding(value) {
+    		handleZoomOut = value;
+    		$$invalidate(6, handleZoomOut);
+    	}
+
+    	function canvas_handleRedo_binding(value) {
+    		handleRedo = value;
+    		$$invalidate(8, handleRedo);
+    	}
+
+    	function canvas_handleUndo_binding(value) {
+    		handleUndo = value;
+    		$$invalidate(7, handleUndo);
+    	}
+
+    	function canvas_handleErase_binding(value) {
+    		handleErase = value;
+    		$$invalidate(9, handleErase);
     	}
 
     	function colorinput_color_binding(value) {
@@ -4757,15 +5094,29 @@ var app = (function () {
     		Tools,
     		color,
     		brushsize,
+    		isErasing,
     		handleClear,
-    		handleSave
+    		handleSave,
+    		handleShare,
+    		handleZoomIn,
+    		handleZoomOut,
+    		handleUndo,
+    		handleRedo,
+    		handleErase
     	});
 
     	$$self.$inject_state = $$props => {
     		if ('color' in $$props) $$invalidate(0, color = $$props.color);
     		if ('brushsize' in $$props) $$invalidate(1, brushsize = $$props.brushsize);
+    		if ('isErasing' in $$props) $$invalidate(10, isErasing = $$props.isErasing);
     		if ('handleClear' in $$props) $$invalidate(2, handleClear = $$props.handleClear);
     		if ('handleSave' in $$props) $$invalidate(3, handleSave = $$props.handleSave);
+    		if ('handleShare' in $$props) $$invalidate(4, handleShare = $$props.handleShare);
+    		if ('handleZoomIn' in $$props) $$invalidate(5, handleZoomIn = $$props.handleZoomIn);
+    		if ('handleZoomOut' in $$props) $$invalidate(6, handleZoomOut = $$props.handleZoomOut);
+    		if ('handleUndo' in $$props) $$invalidate(7, handleUndo = $$props.handleUndo);
+    		if ('handleRedo' in $$props) $$invalidate(8, handleRedo = $$props.handleRedo);
+    		if ('handleErase' in $$props) $$invalidate(9, handleErase = $$props.handleErase);
     	};
 
     	if ($$props && "$$inject" in $$props) {
@@ -4777,8 +5128,21 @@ var app = (function () {
     		brushsize,
     		handleClear,
     		handleSave,
+    		handleShare,
+    		handleZoomIn,
+    		handleZoomOut,
+    		handleUndo,
+    		handleRedo,
+    		handleErase,
+    		isErasing,
     		canvas_handleClear_binding,
     		canvas_handleSave_binding,
+    		canvas_handleShare_binding,
+    		canvas_handleZoomIn_binding,
+    		canvas_handleZoomOut_binding,
+    		canvas_handleRedo_binding,
+    		canvas_handleUndo_binding,
+    		canvas_handleErase_binding,
     		colorinput_color_binding,
     		input_change_input_handler
     	];
