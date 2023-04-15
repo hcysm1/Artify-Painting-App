@@ -8,11 +8,15 @@
     drawEllipse,
   } from "./shapes";
   import { pen, dashedLline, drawLine, gradientLine } from "./styles";
-  import { selectedShape, selectedStroke, shape, stroke } from "./stores";
+  import {
+    selectedShape,
+    selectedStroke,
+    shape,
+    stroke,
+    isErasing,
+  } from "./stores";
   export let brushsize; //brush size
   export let color; //brush color
-  export let isErasing;
-  console.log("start", isErasing);
 
   $: hex = color.toHex8String(); //changing the color value to hex format
 
@@ -31,8 +35,9 @@
   };
   window.addEventListener("load", () => {
     // setting canvas width/height... offsetwidth/height returns viewable width/height of an element
-    canvas.width = canvas.offsetWidth;
-    canvas.height = canvas.offsetHeight;
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
     setCanvasBackground();
   });
 
@@ -40,9 +45,14 @@
     context = canvas.getContext("2d");
   });
 
+  export const handleErase = () => {
+    $selectedStroke = "pen";
+    $isErasing = true;
+  };
+
   //when the color or size changes this statement will run
   $: if (context) {
-    context.strokeStyle = hex; //changing color
+    context.strokeStyle = $isErasing ? "#fffbeb" : hex;
     context.lineWidth = brushsize; //changing size
     context.lineCap = "round"; //change brush shape
     context.lineJoin = "round"; //change brush shape
@@ -62,35 +72,37 @@
     isDrawing = false;
   };
 
+  //to set the erase value to true
+
   const handleMove = (e) => {
     e.preventDefault();
     if (!isDrawing) return;
-    context.putImageData(snapshot, 0, 0); // adding copied canvas data on to this canvas
-    //if condition to select a shape or stroke
-    if (isErasing) {
-      console.log("if", isErasing);
-      context.strokeStyle = "#fffbeb";
-      context.lineTo(e.offsetX, e.offsetY);
-      context.stroke();
+
+    // adding copied canvas data on to this canvas
+    context.putImageData(snapshot, 0, 0);
+
+    if ($isErasing) {
+      pen(e, context);
     } else {
-      if ($selectedShape === "rectangle" && $stroke === false) {
+      //if condition to select a shape or stroke
+      if ($selectedShape === "rectangle" && !$stroke) {
         drawRect(e, context, prevMouseX, prevMouseY);
-      } else if ($selectedShape === "triangle" && $stroke === false) {
+      } else if ($selectedShape === "triangle" && !$stroke) {
         drawTriangle(e, context, prevMouseX, prevMouseY);
-      } else if ($selectedShape === "circle" && $stroke === false) {
+      } else if ($selectedShape === "circle" && !$stroke) {
         drawCircle(e, context, prevMouseX, prevMouseY);
-      } else if ($selectedShape === "hexagon" && $stroke === false) {
+      } else if ($selectedShape === "hexagon" && !$stroke) {
         drawHexagon(e, context, prevMouseX, prevMouseY);
-      } else if ($selectedShape === "ellipse" && $stroke === false) {
+      } else if ($selectedShape === "ellipse" && !$stroke) {
         drawEllipse(e, context, prevMouseX, prevMouseY);
-      } else if ($selectedStroke === "line" && $shape === false) {
+      } else if ($selectedStroke === "line" && !$shape) {
         drawLine(e, context, prevMouseX, prevMouseY);
-      } else if ($selectedStroke === "pen" && $shape === false) {
+      } else if ($selectedStroke === "pen" && !$shape) {
         pen(e, context);
-      } else if ($selectedStroke === "gradientLine" && $shape === false) {
+      } else if ($selectedStroke === "gradientLine" && !$shape) {
         gradientLine(e, context, hex);
         context.strokeStyle = hex;
-      } else if ($selectedStroke === "dashedLine" && $shape === false) {
+      } else if ($selectedStroke === "dashedLine" && !$shape) {
         dashedLline(e, context);
         context.setLineDash([]);
       } else {
@@ -101,7 +113,7 @@
 
   //clear canvas
   export const handleClear = () => {
-    context.clearRect(0, 0, canvas.width, canvas.height);
+    setCanvasBackground();
     undoStack = [];
     redoStack = [];
   };
@@ -145,11 +157,6 @@
       context.putImageData(redoStack.pop(), 0, 0);
     }
   };
-
-  //to set the erase value to true
-  export const handleErase = () => {
-    isErasing = true;
-  };
 </script>
 
 <!-- CANVAS -->
@@ -160,12 +167,3 @@
   on:pointerup={handleEnd}
   on:pointermove={handleMove}
 />
-
-<!-- STYLING -->
-<style>
-  canvas {
-    background-color: #fffbeb;
-    width: 100%;
-    height: 100%;
-  }
-</style>

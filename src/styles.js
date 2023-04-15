@@ -1,4 +1,3 @@
-//pen
 export const pen = (e, ctx) => {
   ctx.lineTo(e.offsetX, e.offsetY); // creating line according to the mouse pointer
   ctx.stroke();

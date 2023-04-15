@@ -1,15 +1,24 @@
 <script>
-  import { selectedShape, selectedStroke, shape, stroke } from "./stores";
+  import {
+    selectedShape,
+    selectedStroke,
+    shape,
+    stroke,
+    isErasing,
+  } from "./stores";
 </script>
 
-<h2>Shapes</h2>
+<h3>Shapes</h3>
 
 <select
   class="dropdown"
   bind:value={$selectedShape}
-  on:click={(e) => (
-    ($selectedShape = e.target.value), ($shape = true), ($stroke = false)
-  )}
+  on:click={(e) => {
+    $isErasing = false;
+    $selectedShape = e.target.value;
+    $stroke = false;
+    $shape = true;
+  }}
 >
   <option value="rectangle">Rectangle</option>
   <option value="triangle">Triangle</option>
@@ -17,13 +26,16 @@
   <option value="hexagon">Hexagon</option>
   <option value="ellipse">Ellipse</option>
 </select>
-<h2>Strokes</h2>
+<h3>Strokes</h3>
 <select
   class="dropdown"
   bind:value={$selectedStroke}
-  on:click={(e) => (
-    ($selectedStroke = e.target.value), ($shape = false), ($stroke = true)
-  )}
+  on:click={(e) => {
+    $isErasing = false;
+    $selectedStroke = e.target.value;
+    $stroke = true;
+    $shape = false;
+  }}
 >
   <option value="pen">Pen</option>
   <option value="dashedLine">Dashed Line</option>
@@ -36,5 +48,31 @@
     width: 100%;
     margin-top: 10px;
     cursor: pointer;
+    color: white;
+    font-weight: bold;
+    background-color: #4b778d;
+    border: 1px solid #4b778d;
+    border-radius: 4px;
+  }
+
+  .dropdown option {
+    color: white;
+    background-color: #4b778d;
+  }
+
+  select:hover {
+    background-color: #e74646;
+  }
+
+  option:hover {
+    background-color: #e74646;
+  }
+
+  h3 {
+    font-size: 20px;
+    text-transform: uppercase;
+    text-align: center;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color: #e74646;
   }
 </style>
