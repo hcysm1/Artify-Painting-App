@@ -822,14 +822,14 @@ var app = (function () {
     	const block = {
     		c: function create() {
     			canvas_1 = element("canvas");
-    			add_location(canvas_1, file$6, 163, 0, 4776);
+    			add_location(canvas_1, file$6, 161, 0, 4736);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, canvas_1, anchor);
-    			/*canvas_1_binding*/ ctx[17](canvas_1);
+    			/*canvas_1_binding*/ ctx[16](canvas_1);
 
     			if (!mounted) {
     				dispose = [
@@ -846,7 +846,7 @@ var app = (function () {
     		o: noop,
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(canvas_1);
-    			/*canvas_1_binding*/ ctx[17](null);
+    			/*canvas_1_binding*/ ctx[16](null);
     			mounted = false;
     			run_all(dispose);
     		}
@@ -871,15 +871,15 @@ var app = (function () {
     	let $selectedShape;
     	let $isErasing;
     	validate_store(shape, 'shape');
-    	component_subscribe($$self, shape, $$value => $$invalidate(25, $shape = $$value));
+    	component_subscribe($$self, shape, $$value => $$invalidate(24, $shape = $$value));
     	validate_store(selectedStroke, 'selectedStroke');
-    	component_subscribe($$self, selectedStroke, $$value => $$invalidate(26, $selectedStroke = $$value));
+    	component_subscribe($$self, selectedStroke, $$value => $$invalidate(25, $selectedStroke = $$value));
     	validate_store(stroke, 'stroke');
-    	component_subscribe($$self, stroke, $$value => $$invalidate(27, $stroke = $$value));
+    	component_subscribe($$self, stroke, $$value => $$invalidate(26, $stroke = $$value));
     	validate_store(selectedShape, 'selectedShape');
-    	component_subscribe($$self, selectedShape, $$value => $$invalidate(28, $selectedShape = $$value));
+    	component_subscribe($$self, selectedShape, $$value => $$invalidate(27, $selectedShape = $$value));
     	validate_store(isErasing, 'isErasing');
-    	component_subscribe($$self, isErasing, $$value => $$invalidate(16, $isErasing = $$value));
+    	component_subscribe($$self, isErasing, $$value => $$invalidate(15, $isErasing = $$value));
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots('Canvas', slots, []);
     	let { brushsize } = $$props;
@@ -894,7 +894,7 @@ var app = (function () {
 
     	const setCanvasBackground = () => {
     		// setting canvas to the original background color
-    		$$invalidate(14, context.fillStyle = "#fffbeb", context);
+    		$$invalidate(13, context.fillStyle = "#fffbeb", context);
 
     		context.fillRect(0, 0, canvas.width, canvas.height);
     	};
@@ -908,7 +908,7 @@ var app = (function () {
     	});
 
     	onMount(() => {
-    		$$invalidate(14, context = canvas.getContext("2d"));
+    		$$invalidate(13, context = canvas.getContext("2d"));
     	});
 
     	const handleErase = () => {
@@ -958,7 +958,7 @@ var app = (function () {
     				pen(e, context);
     			} else if ($selectedStroke === "gradientLine" && !$shape) {
     				gradientLine(e, context, hex);
-    				$$invalidate(14, context.strokeStyle = hex, context);
+    				$$invalidate(13, context.strokeStyle = hex, context);
     			} else if ($selectedStroke === "dashedLine" && !$shape) {
     				dashedLline(e, context);
     				context.setLineDash([]);
@@ -979,10 +979,6 @@ var app = (function () {
     		link.href = canvas.toDataURL("image/jpeg"); // passing canvasData as link href value
     		link.download = "canvas.jpg";
     		link.click(); // clicking link to download image
-    	};
-
-    	const handleShare = () => {
-    		
     	};
 
     	const handleZoomIn = () => {
@@ -1073,7 +1069,6 @@ var app = (function () {
     		handleMove,
     		handleClear,
     		handleSave,
-    		handleShare,
     		handleZoomIn,
     		handleZoomOut,
     		handleUndo,
@@ -1090,7 +1085,7 @@ var app = (function () {
     		if ('brushsize' in $$props) $$invalidate(4, brushsize = $$props.brushsize);
     		if ('color' in $$props) $$invalidate(5, color = $$props.color);
     		if ('canvas' in $$props) $$invalidate(0, canvas = $$props.canvas);
-    		if ('context' in $$props) $$invalidate(14, context = $$props.context);
+    		if ('context' in $$props) $$invalidate(13, context = $$props.context);
     		if ('isDrawing' in $$props) isDrawing = $$props.isDrawing;
     		if ('prevMouseX' in $$props) prevMouseX = $$props.prevMouseX;
     		if ('prevMouseY' in $$props) prevMouseY = $$props.prevMouseY;
@@ -1098,7 +1093,7 @@ var app = (function () {
     		if ('undoStack' in $$props) undoStack = $$props.undoStack;
     		if ('redoStack' in $$props) redoStack = $$props.redoStack;
     		if ('scale' in $$props) scale = $$props.scale;
-    		if ('hex' in $$props) $$invalidate(15, hex = $$props.hex);
+    		if ('hex' in $$props) $$invalidate(14, hex = $$props.hex);
     	};
 
     	if ($$props && "$$inject" in $$props) {
@@ -1107,16 +1102,16 @@ var app = (function () {
 
     	$$self.$$.update = () => {
     		if ($$self.$$.dirty & /*color*/ 32) {
-    			$$invalidate(15, hex = color.toHex8String()); //changing the color value to hex format
+    			$$invalidate(14, hex = color.toHex8String()); //changing the color value to hex format
     		}
 
-    		if ($$self.$$.dirty & /*context, $isErasing, hex, brushsize*/ 114704) {
+    		if ($$self.$$.dirty & /*context, $isErasing, hex, brushsize*/ 57360) {
     			//when the color or size changes this statement will run
     			if (context) {
-    				$$invalidate(14, context.strokeStyle = $isErasing ? "#fffbeb" : hex, context);
-    				$$invalidate(14, context.lineWidth = brushsize, context); //changing size
-    				$$invalidate(14, context.lineCap = "round", context); //change brush shape
-    				$$invalidate(14, context.lineJoin = "round", context); //change brush shape
+    				$$invalidate(13, context.strokeStyle = $isErasing ? "#fffbeb" : hex, context);
+    				$$invalidate(13, context.lineWidth = brushsize, context); //changing size
+    				$$invalidate(13, context.lineCap = "round", context); //change brush shape
+    				$$invalidate(13, context.lineJoin = "round", context); //change brush shape
     			}
     		}
     	};
@@ -1131,7 +1126,6 @@ var app = (function () {
     		handleErase,
     		handleClear,
     		handleSave,
-    		handleShare,
     		handleZoomIn,
     		handleZoomOut,
     		handleUndo,
@@ -1153,11 +1147,10 @@ var app = (function () {
     			handleErase: 6,
     			handleClear: 7,
     			handleSave: 8,
-    			handleShare: 9,
-    			handleZoomIn: 10,
-    			handleZoomOut: 11,
-    			handleUndo: 12,
-    			handleRedo: 13
+    			handleZoomIn: 9,
+    			handleZoomOut: 10,
+    			handleUndo: 11,
+    			handleRedo: 12
     		});
 
     		dispatch_dev("SvelteRegisterComponent", {
@@ -1208,16 +1201,8 @@ var app = (function () {
     		throw new Error("<Canvas>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
     	}
 
-    	get handleShare() {
-    		return this.$$.ctx[9];
-    	}
-
-    	set handleShare(value) {
-    		throw new Error("<Canvas>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
     	get handleZoomIn() {
-    		return this.$$.ctx[10];
+    		return this.$$.ctx[9];
     	}
 
     	set handleZoomIn(value) {
@@ -1225,7 +1210,7 @@ var app = (function () {
     	}
 
     	get handleZoomOut() {
-    		return this.$$.ctx[11];
+    		return this.$$.ctx[10];
     	}
 
     	set handleZoomOut(value) {
@@ -1233,7 +1218,7 @@ var app = (function () {
     	}
 
     	get handleUndo() {
-    		return this.$$.ctx[12];
+    		return this.$$.ctx[11];
     	}
 
     	set handleUndo(value) {
@@ -1241,7 +1226,7 @@ var app = (function () {
     	}
 
     	get handleRedo() {
-    		return this.$$.ctx[13];
+    		return this.$$.ctx[12];
     	}
 
     	set handleRedo(value) {
@@ -4248,7 +4233,7 @@ var app = (function () {
     const file$1 = "src\\Tools.svelte";
 
     function create_fragment$1(ctx) {
-    	let h30;
+    	let h40;
     	let t1;
     	let select0;
     	let option0;
@@ -4257,7 +4242,7 @@ var app = (function () {
     	let option3;
     	let option4;
     	let t7;
-    	let h31;
+    	let h41;
     	let t9;
     	let select1;
     	let option5;
@@ -4269,8 +4254,8 @@ var app = (function () {
 
     	const block = {
     		c: function create() {
-    			h30 = element("h3");
-    			h30.textContent = "Shapes";
+    			h40 = element("h4");
+    			h40.textContent = "Shapes";
     			t1 = space();
     			select0 = element("select");
     			option0 = element("option");
@@ -4284,8 +4269,8 @@ var app = (function () {
     			option4 = element("option");
     			option4.textContent = "Ellipse";
     			t7 = space();
-    			h31 = element("h3");
-    			h31.textContent = "Strokes";
+    			h41 = element("h4");
+    			h41.textContent = "Strokes";
     			t9 = space();
     			select1 = element("select");
     			option5 = element("option");
@@ -4296,50 +4281,50 @@ var app = (function () {
     			option7.textContent = "Straight Line";
     			option8 = element("option");
     			option8.textContent = "Gradient Line";
-    			attr_dev(h30, "class", "svelte-1xggbkh");
-    			add_location(h30, file$1, 10, 0, 139);
+    			attr_dev(h40, "class", "svelte-v6on7o");
+    			add_location(h40, file$1, 10, 0, 139);
     			option0.__value = "rectangle";
     			option0.value = option0.__value;
-    			attr_dev(option0, "class", "svelte-1xggbkh");
+    			attr_dev(option0, "class", "svelte-v6on7o");
     			add_location(option0, file$1, 22, 2, 356);
     			option1.__value = "triangle";
     			option1.value = option1.__value;
-    			attr_dev(option1, "class", "svelte-1xggbkh");
+    			attr_dev(option1, "class", "svelte-v6on7o");
     			add_location(option1, file$1, 23, 2, 404);
     			option2.__value = "circle";
     			option2.value = option2.__value;
-    			attr_dev(option2, "class", "svelte-1xggbkh");
+    			attr_dev(option2, "class", "svelte-v6on7o");
     			add_location(option2, file$1, 24, 2, 450);
     			option3.__value = "hexagon";
     			option3.value = option3.__value;
-    			attr_dev(option3, "class", "svelte-1xggbkh");
+    			attr_dev(option3, "class", "svelte-v6on7o");
     			add_location(option3, file$1, 25, 2, 492);
     			option4.__value = "ellipse";
     			option4.value = option4.__value;
-    			attr_dev(option4, "class", "svelte-1xggbkh");
+    			attr_dev(option4, "class", "svelte-v6on7o");
     			add_location(option4, file$1, 26, 2, 536);
-    			attr_dev(select0, "class", "dropdown svelte-1xggbkh");
+    			attr_dev(select0, "class", "dropdown svelte-v6on7o");
     			if (/*$selectedShape*/ ctx[1] === void 0) add_render_callback(() => /*select0_change_handler*/ ctx[5].call(select0));
     			add_location(select0, file$1, 12, 0, 158);
-    			attr_dev(h31, "class", "svelte-1xggbkh");
-    			add_location(h31, file$1, 28, 0, 589);
+    			attr_dev(h41, "class", "svelte-v6on7o");
+    			add_location(h41, file$1, 28, 0, 589);
     			option5.__value = "pen";
     			option5.value = option5.__value;
-    			attr_dev(option5, "class", "svelte-1xggbkh");
+    			attr_dev(option5, "class", "svelte-v6on7o");
     			add_location(option5, file$1, 39, 2, 807);
     			option6.__value = "dashedLine";
     			option6.value = option6.__value;
-    			attr_dev(option6, "class", "svelte-1xggbkh");
+    			attr_dev(option6, "class", "svelte-v6on7o");
     			add_location(option6, file$1, 40, 2, 843);
     			option7.__value = "line";
     			option7.value = option7.__value;
-    			attr_dev(option7, "class", "svelte-1xggbkh");
+    			attr_dev(option7, "class", "svelte-v6on7o");
     			add_location(option7, file$1, 41, 2, 894);
     			option8.__value = "gradientLine";
     			option8.value = option8.__value;
-    			attr_dev(option8, "class", "svelte-1xggbkh");
+    			attr_dev(option8, "class", "svelte-v6on7o");
     			add_location(option8, file$1, 42, 2, 942);
-    			attr_dev(select1, "class", "dropdown svelte-1xggbkh");
+    			attr_dev(select1, "class", "dropdown svelte-v6on7o");
     			if (/*$selectedStroke*/ ctx[4] === void 0) add_render_callback(() => /*select1_change_handler*/ ctx[7].call(select1));
     			add_location(select1, file$1, 29, 0, 607);
     		},
@@ -4347,7 +4332,7 @@ var app = (function () {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
     		},
     		m: function mount(target, anchor) {
-    			insert_dev(target, h30, anchor);
+    			insert_dev(target, h40, anchor);
     			insert_dev(target, t1, anchor);
     			insert_dev(target, select0, anchor);
     			append_dev(select0, option0);
@@ -4357,7 +4342,7 @@ var app = (function () {
     			append_dev(select0, option4);
     			select_option(select0, /*$selectedShape*/ ctx[1], true);
     			insert_dev(target, t7, anchor);
-    			insert_dev(target, h31, anchor);
+    			insert_dev(target, h41, anchor);
     			insert_dev(target, t9, anchor);
     			insert_dev(target, select1, anchor);
     			append_dev(select1, option5);
@@ -4389,11 +4374,11 @@ var app = (function () {
     		i: noop,
     		o: noop,
     		d: function destroy(detaching) {
-    			if (detaching) detach_dev(h30);
+    			if (detaching) detach_dev(h40);
     			if (detaching) detach_dev(t1);
     			if (detaching) detach_dev(select0);
     			if (detaching) detach_dev(t7);
-    			if (detaching) detach_dev(h31);
+    			if (detaching) detach_dev(h41);
     			if (detaching) detach_dev(t9);
     			if (detaching) detach_dev(select1);
     			mounted = false;
@@ -4510,7 +4495,6 @@ var app = (function () {
     	let canvas;
     	let updating_handleClear;
     	let updating_handleSave;
-    	let updating_handleShare;
     	let updating_handleZoomIn;
     	let updating_handleZoomOut;
     	let updating_handleRedo;
@@ -4538,10 +4522,10 @@ var app = (function () {
     	let button4;
     	let span4;
     	let t12;
+    	let div1;
     	let button5;
     	let span5;
     	let t14;
-    	let div1;
     	let button6;
     	let span6;
     	let t16;
@@ -4551,51 +4535,44 @@ var app = (function () {
     	let button8;
     	let span8;
     	let t20;
-    	let button9;
-    	let span9;
-    	let t22;
     	let div2;
     	let tools;
-    	let t23;
+    	let t21;
     	let div3;
     	let colorinput;
     	let updating_color;
-    	let t24;
+    	let t22;
     	let input;
     	let current;
     	let mounted;
     	let dispose;
 
     	function canvas_handleClear_binding(value) {
-    		/*canvas_handleClear_binding*/ ctx[12](value);
+    		/*canvas_handleClear_binding*/ ctx[11](value);
     	}
 
     	function canvas_handleSave_binding(value) {
-    		/*canvas_handleSave_binding*/ ctx[13](value);
-    	}
-
-    	function canvas_handleShare_binding(value) {
-    		/*canvas_handleShare_binding*/ ctx[14](value);
+    		/*canvas_handleSave_binding*/ ctx[12](value);
     	}
 
     	function canvas_handleZoomIn_binding(value) {
-    		/*canvas_handleZoomIn_binding*/ ctx[15](value);
+    		/*canvas_handleZoomIn_binding*/ ctx[13](value);
     	}
 
     	function canvas_handleZoomOut_binding(value) {
-    		/*canvas_handleZoomOut_binding*/ ctx[16](value);
+    		/*canvas_handleZoomOut_binding*/ ctx[14](value);
     	}
 
     	function canvas_handleRedo_binding(value) {
-    		/*canvas_handleRedo_binding*/ ctx[17](value);
+    		/*canvas_handleRedo_binding*/ ctx[15](value);
     	}
 
     	function canvas_handleUndo_binding(value) {
-    		/*canvas_handleUndo_binding*/ ctx[18](value);
+    		/*canvas_handleUndo_binding*/ ctx[16](value);
     	}
 
     	function canvas_handleErase_binding(value) {
-    		/*canvas_handleErase_binding*/ ctx[19](value);
+    		/*canvas_handleErase_binding*/ ctx[17](value);
     	}
 
     	let canvas_props = {
@@ -4611,34 +4588,29 @@ var app = (function () {
     		canvas_props.handleSave = /*handleSave*/ ctx[3];
     	}
 
-    	if (/*handleShare*/ ctx[4] !== void 0) {
-    		canvas_props.handleShare = /*handleShare*/ ctx[4];
+    	if (/*handleZoomIn*/ ctx[4] !== void 0) {
+    		canvas_props.handleZoomIn = /*handleZoomIn*/ ctx[4];
     	}
 
-    	if (/*handleZoomIn*/ ctx[5] !== void 0) {
-    		canvas_props.handleZoomIn = /*handleZoomIn*/ ctx[5];
+    	if (/*handleZoomOut*/ ctx[5] !== void 0) {
+    		canvas_props.handleZoomOut = /*handleZoomOut*/ ctx[5];
     	}
 
-    	if (/*handleZoomOut*/ ctx[6] !== void 0) {
-    		canvas_props.handleZoomOut = /*handleZoomOut*/ ctx[6];
+    	if (/*handleRedo*/ ctx[7] !== void 0) {
+    		canvas_props.handleRedo = /*handleRedo*/ ctx[7];
     	}
 
-    	if (/*handleRedo*/ ctx[8] !== void 0) {
-    		canvas_props.handleRedo = /*handleRedo*/ ctx[8];
+    	if (/*handleUndo*/ ctx[6] !== void 0) {
+    		canvas_props.handleUndo = /*handleUndo*/ ctx[6];
     	}
 
-    	if (/*handleUndo*/ ctx[7] !== void 0) {
-    		canvas_props.handleUndo = /*handleUndo*/ ctx[7];
-    	}
-
-    	if (/*handleErase*/ ctx[9] !== void 0) {
-    		canvas_props.handleErase = /*handleErase*/ ctx[9];
+    	if (/*handleErase*/ ctx[8] !== void 0) {
+    		canvas_props.handleErase = /*handleErase*/ ctx[8];
     	}
 
     	canvas = new Canvas({ props: canvas_props, $$inline: true });
     	binding_callbacks.push(() => bind(canvas, 'handleClear', canvas_handleClear_binding));
     	binding_callbacks.push(() => bind(canvas, 'handleSave', canvas_handleSave_binding));
-    	binding_callbacks.push(() => bind(canvas, 'handleShare', canvas_handleShare_binding));
     	binding_callbacks.push(() => bind(canvas, 'handleZoomIn', canvas_handleZoomIn_binding));
     	binding_callbacks.push(() => bind(canvas, 'handleZoomOut', canvas_handleZoomOut_binding));
     	binding_callbacks.push(() => bind(canvas, 'handleRedo', canvas_handleRedo_binding));
@@ -4647,7 +4619,7 @@ var app = (function () {
     	tools = new Tools({ $$inline: true });
 
     	function colorinput_color_binding(value) {
-    		/*colorinput_color_binding*/ ctx[20](value);
+    		/*colorinput_color_binding*/ ctx[18](value);
     	}
 
     	let colorinput_props = { showAlphaSlider: true };
@@ -4687,110 +4659,102 @@ var app = (function () {
     			t8 = space();
     			button3 = element("button");
     			span3 = element("span");
-    			span3.textContent = "share";
+    			span3.textContent = "zoom_in";
     			t10 = space();
     			button4 = element("button");
     			span4 = element("span");
-    			span4.textContent = "zoom_in";
+    			span4.textContent = "zoom_out";
     			t12 = space();
+    			div1 = element("div");
     			button5 = element("button");
     			span5 = element("span");
-    			span5.textContent = "zoom_out";
+    			span5.textContent = "refresh";
     			t14 = space();
-    			div1 = element("div");
     			button6 = element("button");
     			span6 = element("span");
-    			span6.textContent = "refresh";
+    			span6.textContent = "auto_fix_normal";
     			t16 = space();
     			button7 = element("button");
     			span7 = element("span");
-    			span7.textContent = "auto_fix_normal";
+    			span7.textContent = "undo";
     			t18 = space();
     			button8 = element("button");
     			span8 = element("span");
-    			span8.textContent = "undo";
+    			span8.textContent = "redo";
     			t20 = space();
-    			button9 = element("button");
-    			span9 = element("span");
-    			span9.textContent = "redo";
-    			t22 = space();
     			div2 = element("div");
     			create_component(tools.$$.fragment);
-    			t23 = space();
+    			t21 = space();
     			div3 = element("div");
     			create_component(colorinput.$$.fragment);
-    			t24 = space();
+    			t22 = space();
     			input = element("input");
-    			attr_dev(section0, "class", "canvas svelte-vm56s7");
-    			add_location(section0, file, 37, 4, 1214);
+    			attr_dev(section0, "class", "canvas svelte-kkkvjd");
+    			add_location(section0, file, 36, 4, 1195);
     			attr_dev(span0, "class", "material-symbols-rounded");
-    			add_location(span0, file, 56, 8, 1658);
+    			add_location(span0, file, 54, 8, 1614);
     			attr_dev(button0, "id", "close-toolbox");
-    			attr_dev(button0, "class", "svelte-vm56s7");
-    			add_location(button0, file, 55, 6, 1599);
-    			attr_dev(section1, "class", "close svelte-vm56s7");
-    			add_location(section1, file, 54, 4, 1569);
+    			attr_dev(button0, "class", "svelte-kkkvjd");
+    			add_location(button0, file, 53, 6, 1555);
+    			attr_dev(section1, "class", "close svelte-kkkvjd");
+    			add_location(section1, file, 52, 4, 1525);
     			attr_dev(span1, "class", "material-symbols-rounded");
-    			add_location(span1, file, 61, 8, 1839);
+    			add_location(span1, file, 59, 8, 1795);
     			attr_dev(button1, "id", "open-toolbox");
-    			attr_dev(button1, "class", "svelte-vm56s7");
-    			add_location(button1, file, 60, 6, 1782);
-    			attr_dev(section2, "class", "open svelte-vm56s7");
-    			add_location(section2, file, 59, 4, 1753);
-    			attr_dev(h2, "class", "svelte-vm56s7");
-    			add_location(h2, file, 65, 6, 1977);
+    			attr_dev(button1, "class", "svelte-kkkvjd");
+    			add_location(button1, file, 58, 6, 1738);
+    			attr_dev(section2, "class", "open svelte-kkkvjd");
+    			add_location(section2, file, 57, 4, 1709);
+    			attr_dev(h2, "class", "svelte-kkkvjd");
+    			add_location(h2, file, 63, 6, 1933);
     			attr_dev(span2, "class", "material-symbols-rounded");
-    			add_location(span2, file, 68, 10, 2104);
-    			attr_dev(button2, "class", "canvas-tools-buttons svelte-vm56s7");
-    			add_location(button2, file, 67, 8, 2034);
+    			add_location(span2, file, 66, 10, 2060);
+    			attr_dev(button2, "class", "canvas-tools-buttons svelte-kkkvjd");
+    			add_location(button2, file, 65, 8, 1990);
     			attr_dev(span3, "class", "material-symbols-rounded");
-    			add_location(span3, file, 71, 10, 2257);
-    			attr_dev(button3, "class", "canvas-tools-buttons svelte-vm56s7");
-    			add_location(button3, file, 70, 8, 2186);
+    			add_location(span3, file, 69, 10, 2214);
+    			attr_dev(button3, "class", "canvas-tools-buttons svelte-kkkvjd");
+    			add_location(button3, file, 68, 8, 2142);
     			attr_dev(span4, "class", "material-symbols-rounded");
-    			add_location(span4, file, 74, 10, 2409);
-    			attr_dev(button4, "class", "canvas-tools-buttons svelte-vm56s7");
-    			add_location(button4, file, 73, 8, 2337);
+    			add_location(span4, file, 72, 10, 2368);
+    			attr_dev(button4, "class", "canvas-tools-buttons svelte-kkkvjd");
+    			add_location(button4, file, 71, 8, 2295);
+    			attr_dev(div0, "class", "canvas-tools svelte-kkkvjd");
+    			add_location(div0, file, 64, 6, 1955);
     			attr_dev(span5, "class", "material-symbols-rounded");
-    			add_location(span5, file, 77, 10, 2563);
-    			attr_dev(button5, "class", "canvas-tools-buttons svelte-vm56s7");
-    			add_location(button5, file, 76, 8, 2490);
-    			attr_dev(div0, "class", "canvas-tools svelte-vm56s7");
-    			add_location(div0, file, 66, 6, 1999);
+    			add_location(span5, file, 77, 10, 2568);
+    			attr_dev(button5, "class", "canvas-tools-buttons svelte-kkkvjd");
+    			add_location(button5, file, 76, 8, 2497);
     			attr_dev(span6, "class", "material-symbols-rounded");
-    			add_location(span6, file, 82, 10, 2763);
-    			attr_dev(button6, "class", "canvas-tools-buttons svelte-vm56s7");
-    			add_location(button6, file, 81, 8, 2692);
+    			add_location(span6, file, 80, 10, 2721);
+    			attr_dev(button6, "class", "canvas-tools-buttons svelte-kkkvjd");
+    			add_location(button6, file, 79, 8, 2650);
     			attr_dev(span7, "class", "material-symbols-rounded");
-    			add_location(span7, file, 85, 10, 2916);
-    			attr_dev(button7, "class", "canvas-tools-buttons svelte-vm56s7");
-    			add_location(button7, file, 84, 8, 2845);
+    			add_location(span7, file, 83, 10, 2881);
+    			attr_dev(button7, "class", "canvas-tools-buttons svelte-kkkvjd");
+    			add_location(button7, file, 82, 8, 2811);
     			attr_dev(span8, "class", "material-symbols-rounded");
-    			add_location(span8, file, 88, 10, 3076);
-    			attr_dev(button8, "class", "canvas-tools-buttons svelte-vm56s7");
-    			add_location(button8, file, 87, 8, 3006);
-    			attr_dev(span9, "class", "material-symbols-rounded");
-    			add_location(span9, file, 91, 10, 3225);
-    			attr_dev(button9, "class", "canvas-tools-buttons svelte-vm56s7");
-    			add_location(button9, file, 90, 8, 3155);
-    			attr_dev(div1, "class", "canvas-tools svelte-vm56s7");
-    			add_location(div1, file, 80, 6, 2657);
-    			attr_dev(div2, "class", "painting-tools svelte-vm56s7");
-    			add_location(div2, file, 95, 6, 3316);
-    			attr_dev(input, "class", "size-slider svelte-vm56s7");
+    			add_location(span8, file, 86, 10, 3030);
+    			attr_dev(button8, "class", "canvas-tools-buttons svelte-kkkvjd");
+    			add_location(button8, file, 85, 8, 2960);
+    			attr_dev(div1, "class", "canvas-tools svelte-kkkvjd");
+    			add_location(div1, file, 75, 6, 2462);
+    			attr_dev(div2, "class", "painting-tools svelte-kkkvjd");
+    			add_location(div2, file, 90, 6, 3121);
+    			attr_dev(input, "class", "size-slider svelte-kkkvjd");
     			attr_dev(input, "type", "range");
     			attr_dev(input, "min", "0");
     			attr_dev(input, "max", "100");
-    			add_location(input, file, 102, 8, 3525);
-    			attr_dev(div3, "class", "styles-tools svelte-vm56s7");
-    			add_location(div3, file, 98, 6, 3382);
+    			add_location(input, file, 97, 8, 3330);
+    			attr_dev(div3, "class", "styles-tools svelte-kkkvjd");
+    			add_location(div3, file, 93, 6, 3187);
     			attr_dev(section3, "id", "tool-box");
-    			attr_dev(section3, "class", "toolbox svelte-vm56s7");
-    			add_location(section3, file, 64, 4, 1931);
+    			attr_dev(section3, "class", "toolbox svelte-kkkvjd");
+    			add_location(section3, file, 62, 4, 1887);
     			attr_dev(div4, "class", "container");
-    			add_location(div4, file, 35, 2, 1156);
-    			attr_dev(body, "class", "svelte-vm56s7");
-    			add_location(body, file, 34, 0, 1147);
+    			add_location(div4, file, 34, 2, 1137);
+    			attr_dev(body, "class", "svelte-kkkvjd");
+    			add_location(body, file, 33, 0, 1128);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -4821,11 +4785,11 @@ var app = (function () {
     			append_dev(div0, t10);
     			append_dev(div0, button4);
     			append_dev(button4, span4);
-    			append_dev(div0, t12);
-    			append_dev(div0, button5);
-    			append_dev(button5, span5);
-    			append_dev(section3, t14);
+    			append_dev(section3, t12);
     			append_dev(section3, div1);
+    			append_dev(div1, button5);
+    			append_dev(button5, span5);
+    			append_dev(div1, t14);
     			append_dev(div1, button6);
     			append_dev(button6, span6);
     			append_dev(div1, t16);
@@ -4834,24 +4798,21 @@ var app = (function () {
     			append_dev(div1, t18);
     			append_dev(div1, button8);
     			append_dev(button8, span8);
-    			append_dev(div1, t20);
-    			append_dev(div1, button9);
-    			append_dev(button9, span9);
-    			append_dev(section3, t22);
+    			append_dev(section3, t20);
     			append_dev(section3, div2);
     			mount_component(tools, div2, null);
-    			append_dev(section3, t23);
+    			append_dev(section3, t21);
     			append_dev(section3, div3);
     			mount_component(colorinput, div3, null);
-    			append_dev(div3, t24);
+    			append_dev(div3, t22);
     			append_dev(div3, input);
     			set_input_value(input, /*brushsize*/ ctx[1]);
     			current = true;
 
     			if (!mounted) {
     				dispose = [
-    					listen_dev(button0, "click", /*handleClose*/ ctx[10], false, false, false, false),
-    					listen_dev(button1, "click", /*handleOpen*/ ctx[11], false, false, false, false),
+    					listen_dev(button0, "click", /*handleClose*/ ctx[9], false, false, false, false),
+    					listen_dev(button1, "click", /*handleOpen*/ ctx[10], false, false, false, false),
     					listen_dev(
     						button2,
     						"click",
@@ -4867,7 +4828,7 @@ var app = (function () {
     						button3,
     						"click",
     						function () {
-    							if (is_function(/*handleShare*/ ctx[4])) /*handleShare*/ ctx[4].apply(this, arguments);
+    							if (is_function(/*handleZoomIn*/ ctx[4])) /*handleZoomIn*/ ctx[4].apply(this, arguments);
     						},
     						false,
     						false,
@@ -4878,7 +4839,7 @@ var app = (function () {
     						button4,
     						"click",
     						function () {
-    							if (is_function(/*handleZoomIn*/ ctx[5])) /*handleZoomIn*/ ctx[5].apply(this, arguments);
+    							if (is_function(/*handleZoomOut*/ ctx[5])) /*handleZoomOut*/ ctx[5].apply(this, arguments);
     						},
     						false,
     						false,
@@ -4889,7 +4850,7 @@ var app = (function () {
     						button5,
     						"click",
     						function () {
-    							if (is_function(/*handleZoomOut*/ ctx[6])) /*handleZoomOut*/ ctx[6].apply(this, arguments);
+    							if (is_function(/*handleClear*/ ctx[2])) /*handleClear*/ ctx[2].apply(this, arguments);
     						},
     						false,
     						false,
@@ -4900,7 +4861,7 @@ var app = (function () {
     						button6,
     						"click",
     						function () {
-    							if (is_function(/*handleClear*/ ctx[2])) /*handleClear*/ ctx[2].apply(this, arguments);
+    							if (is_function(/*handleErase*/ ctx[8])) /*handleErase*/ ctx[8].apply(this, arguments);
     						},
     						false,
     						false,
@@ -4911,7 +4872,7 @@ var app = (function () {
     						button7,
     						"click",
     						function () {
-    							if (is_function(/*handleErase*/ ctx[9])) /*handleErase*/ ctx[9].apply(this, arguments);
+    							if (is_function(/*handleUndo*/ ctx[6])) /*handleUndo*/ ctx[6].apply(this, arguments);
     						},
     						false,
     						false,
@@ -4922,26 +4883,15 @@ var app = (function () {
     						button8,
     						"click",
     						function () {
-    							if (is_function(/*handleUndo*/ ctx[7])) /*handleUndo*/ ctx[7].apply(this, arguments);
+    							if (is_function(/*handleRedo*/ ctx[7])) /*handleRedo*/ ctx[7].apply(this, arguments);
     						},
     						false,
     						false,
     						false,
     						false
     					),
-    					listen_dev(
-    						button9,
-    						"click",
-    						function () {
-    							if (is_function(/*handleRedo*/ ctx[8])) /*handleRedo*/ ctx[8].apply(this, arguments);
-    						},
-    						false,
-    						false,
-    						false,
-    						false
-    					),
-    					listen_dev(input, "change", /*input_change_input_handler*/ ctx[21]),
-    					listen_dev(input, "input", /*input_change_input_handler*/ ctx[21])
+    					listen_dev(input, "change", /*input_change_input_handler*/ ctx[19]),
+    					listen_dev(input, "input", /*input_change_input_handler*/ ctx[19])
     				];
 
     				mounted = true;
@@ -4965,39 +4915,33 @@ var app = (function () {
     				add_flush_callback(() => updating_handleSave = false);
     			}
 
-    			if (!updating_handleShare && dirty & /*handleShare*/ 16) {
-    				updating_handleShare = true;
-    				canvas_changes.handleShare = /*handleShare*/ ctx[4];
-    				add_flush_callback(() => updating_handleShare = false);
-    			}
-
-    			if (!updating_handleZoomIn && dirty & /*handleZoomIn*/ 32) {
+    			if (!updating_handleZoomIn && dirty & /*handleZoomIn*/ 16) {
     				updating_handleZoomIn = true;
-    				canvas_changes.handleZoomIn = /*handleZoomIn*/ ctx[5];
+    				canvas_changes.handleZoomIn = /*handleZoomIn*/ ctx[4];
     				add_flush_callback(() => updating_handleZoomIn = false);
     			}
 
-    			if (!updating_handleZoomOut && dirty & /*handleZoomOut*/ 64) {
+    			if (!updating_handleZoomOut && dirty & /*handleZoomOut*/ 32) {
     				updating_handleZoomOut = true;
-    				canvas_changes.handleZoomOut = /*handleZoomOut*/ ctx[6];
+    				canvas_changes.handleZoomOut = /*handleZoomOut*/ ctx[5];
     				add_flush_callback(() => updating_handleZoomOut = false);
     			}
 
-    			if (!updating_handleRedo && dirty & /*handleRedo*/ 256) {
+    			if (!updating_handleRedo && dirty & /*handleRedo*/ 128) {
     				updating_handleRedo = true;
-    				canvas_changes.handleRedo = /*handleRedo*/ ctx[8];
+    				canvas_changes.handleRedo = /*handleRedo*/ ctx[7];
     				add_flush_callback(() => updating_handleRedo = false);
     			}
 
-    			if (!updating_handleUndo && dirty & /*handleUndo*/ 128) {
+    			if (!updating_handleUndo && dirty & /*handleUndo*/ 64) {
     				updating_handleUndo = true;
-    				canvas_changes.handleUndo = /*handleUndo*/ ctx[7];
+    				canvas_changes.handleUndo = /*handleUndo*/ ctx[6];
     				add_flush_callback(() => updating_handleUndo = false);
     			}
 
-    			if (!updating_handleErase && dirty & /*handleErase*/ 512) {
+    			if (!updating_handleErase && dirty & /*handleErase*/ 256) {
     				updating_handleErase = true;
-    				canvas_changes.handleErase = /*handleErase*/ ctx[9];
+    				canvas_changes.handleErase = /*handleErase*/ ctx[8];
     				add_flush_callback(() => updating_handleErase = false);
     			}
 
@@ -5057,7 +5001,6 @@ var app = (function () {
     	let brushsize = 1; //size of brush
     	let handleClear; //to clear canvas
     	let handleSave; //to save the canvas as image
-    	let handleShare;
     	let handleZoomIn; //to zoom in
     	let handleZoomOut; //to zoom out
     	let handleUndo; //to undo
@@ -5096,34 +5039,29 @@ var app = (function () {
     		$$invalidate(3, handleSave);
     	}
 
-    	function canvas_handleShare_binding(value) {
-    		handleShare = value;
-    		$$invalidate(4, handleShare);
-    	}
-
     	function canvas_handleZoomIn_binding(value) {
     		handleZoomIn = value;
-    		$$invalidate(5, handleZoomIn);
+    		$$invalidate(4, handleZoomIn);
     	}
 
     	function canvas_handleZoomOut_binding(value) {
     		handleZoomOut = value;
-    		$$invalidate(6, handleZoomOut);
+    		$$invalidate(5, handleZoomOut);
     	}
 
     	function canvas_handleRedo_binding(value) {
     		handleRedo = value;
-    		$$invalidate(8, handleRedo);
+    		$$invalidate(7, handleRedo);
     	}
 
     	function canvas_handleUndo_binding(value) {
     		handleUndo = value;
-    		$$invalidate(7, handleUndo);
+    		$$invalidate(6, handleUndo);
     	}
 
     	function canvas_handleErase_binding(value) {
     		handleErase = value;
-    		$$invalidate(9, handleErase);
+    		$$invalidate(8, handleErase);
     	}
 
     	function colorinput_color_binding(value) {
@@ -5145,7 +5083,6 @@ var app = (function () {
     		brushsize,
     		handleClear,
     		handleSave,
-    		handleShare,
     		handleZoomIn,
     		handleZoomOut,
     		handleUndo,
@@ -5160,12 +5097,11 @@ var app = (function () {
     		if ('brushsize' in $$props) $$invalidate(1, brushsize = $$props.brushsize);
     		if ('handleClear' in $$props) $$invalidate(2, handleClear = $$props.handleClear);
     		if ('handleSave' in $$props) $$invalidate(3, handleSave = $$props.handleSave);
-    		if ('handleShare' in $$props) $$invalidate(4, handleShare = $$props.handleShare);
-    		if ('handleZoomIn' in $$props) $$invalidate(5, handleZoomIn = $$props.handleZoomIn);
-    		if ('handleZoomOut' in $$props) $$invalidate(6, handleZoomOut = $$props.handleZoomOut);
-    		if ('handleUndo' in $$props) $$invalidate(7, handleUndo = $$props.handleUndo);
-    		if ('handleRedo' in $$props) $$invalidate(8, handleRedo = $$props.handleRedo);
-    		if ('handleErase' in $$props) $$invalidate(9, handleErase = $$props.handleErase);
+    		if ('handleZoomIn' in $$props) $$invalidate(4, handleZoomIn = $$props.handleZoomIn);
+    		if ('handleZoomOut' in $$props) $$invalidate(5, handleZoomOut = $$props.handleZoomOut);
+    		if ('handleUndo' in $$props) $$invalidate(6, handleUndo = $$props.handleUndo);
+    		if ('handleRedo' in $$props) $$invalidate(7, handleRedo = $$props.handleRedo);
+    		if ('handleErase' in $$props) $$invalidate(8, handleErase = $$props.handleErase);
     	};
 
     	if ($$props && "$$inject" in $$props) {
@@ -5177,7 +5113,6 @@ var app = (function () {
     		brushsize,
     		handleClear,
     		handleSave,
-    		handleShare,
     		handleZoomIn,
     		handleZoomOut,
     		handleUndo,
@@ -5187,7 +5122,6 @@ var app = (function () {
     		handleOpen,
     		canvas_handleClear_binding,
     		canvas_handleSave_binding,
-    		canvas_handleShare_binding,
     		canvas_handleZoomIn_binding,
     		canvas_handleZoomOut_binding,
     		canvas_handleRedo_binding,

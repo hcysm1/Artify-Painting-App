@@ -126,8 +126,6 @@
     link.click(); // clicking link to download image
   };
 
-  export const handleShare = () => {};
-
   //zoom in function
   export const handleZoomIn = () => {
     scale += 0.1;

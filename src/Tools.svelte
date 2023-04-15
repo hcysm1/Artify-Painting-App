@@ -8,7 +8,7 @@
   } from "./stores";
 </script>
 
-<h3>Shapes</h3>
+<h4>Shapes</h4>
 
 <select
   class="dropdown"
@@ -26,7 +26,7 @@
   <option value="hexagon">Hexagon</option>
   <option value="ellipse">Ellipse</option>
 </select>
-<h3>Strokes</h3>
+<h4>Strokes</h4>
 <select
   class="dropdown"
   bind:value={$selectedStroke}
@@ -46,7 +46,6 @@
 <style>
   .dropdown {
     width: 100%;
-    margin-top: 10px;
     cursor: pointer;
     color: white;
     font-weight: bold;
@@ -68,9 +67,8 @@
     background-color: #e74646;
   }
 
-  h3 {
-    font-size: 20px;
-    text-transform: uppercase;
+  h4 {
+    font-size: 18px;
     text-align: center;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     color: #e74646;

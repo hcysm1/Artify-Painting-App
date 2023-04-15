@@ -8,7 +8,6 @@
 
   let handleClear; //to clear canvas
   let handleSave; //to save the canvas as image
-  let handleShare;
   let handleZoomIn; //to zoom in
   let handleZoomOut; //to zoom out
   let handleUndo; //to undo
@@ -42,7 +41,6 @@
         {brushsize}
         bind:handleClear
         bind:handleSave
-        bind:handleShare
         bind:handleZoomIn
         bind:handleZoomOut
         bind:handleRedo
@@ -67,9 +65,6 @@
       <div class="canvas-tools">
         <button class="canvas-tools-buttons" on:click={handleSave}>
           <span class="material-symbols-rounded"> download</span>
-        </button>
-        <button class="canvas-tools-buttons" on:click={handleShare}>
-          <span class="material-symbols-rounded"> share </span>
         </button>
         <button class="canvas-tools-buttons" on:click={handleZoomIn}>
           <span class="material-symbols-rounded"> zoom_in</span>
@@ -220,14 +215,14 @@
     color: #fff;
     cursor: pointer;
     height: 40px;
-    width: 60px;
+    width: 100%;
     font-size: 16px;
   }
 
   .size-slider {
     width: 100%;
     height: 5px;
-    margin-top: 10px;
+    margin-top: 30px;
     cursor: pointer;
   }
 </style>
