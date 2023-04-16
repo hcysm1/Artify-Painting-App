@@ -182,11 +182,12 @@
 
   section.canvas {
     left: 0;
-    width: 100%;
-    height: 100%;
+    max-width: 100%;
+    height: auto;
     display: flex;
     justify-content: center;
     align-items: center;
+    touch-action: none;
   }
   section.toolbox > div {
     padding: 20px 16px 8px 16px;
