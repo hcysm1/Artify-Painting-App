@@ -1,7 +1,4 @@
-## Get started
+## Demo
+https://artiify.vercel.app/
 
-Install the dependencies...
-
-cd svelte-app
-npm install
 
