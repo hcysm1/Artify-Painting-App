@@ -10,6 +10,7 @@
 
 <h4>Shapes</h4>
 
+<!-- select shapes -->
 <select
   class="dropdown"
   bind:value={$selectedShape}
@@ -27,6 +28,7 @@
   <option value="ellipse">Ellipse</option>
 </select>
 <h4>Strokes</h4>
+<!-- select strokes -->
 <select
   class="dropdown"
   bind:value={$selectedStroke}
@@ -60,10 +62,6 @@
   }
 
   select:hover {
-    background-color: #e74646;
-  }
-
-  option:hover {
     background-color: #e74646;
   }
 

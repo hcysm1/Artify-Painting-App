@@ -724,12 +724,13 @@ var app = (function () {
       ctx.stroke();
     };
 
+    //draw freehand line
     const pen = (e, ctx) => {
       ctx.lineTo(e.offsetX, e.offsetY); // creating line according to the mouse pointer
       ctx.stroke();
     };
 
-    //Draw Line
+    //Draw straight line
     const drawLine = (e, ctx, prevMouseX, prevMouseY) => {
       ctx.beginPath();
       ctx.moveTo(prevMouseX, prevMouseY); // moving polygon to the mouse pointer
@@ -822,7 +823,7 @@ var app = (function () {
     	const block = {
     		c: function create() {
     			canvas_1 = element("canvas");
-    			add_location(canvas_1, file$6, 161, 0, 4736);
+    			add_location(canvas_1, file$6, 164, 0, 4742);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -892,6 +893,7 @@ var app = (function () {
     	let redoStack = [];
     	let scale = 1;
 
+    	//set canvas background
     	const setCanvasBackground = () => {
     		// setting canvas to the original background color
     		$$invalidate(13, context.fillStyle = "#fffbeb", context);
@@ -900,9 +902,7 @@ var app = (function () {
     	};
 
     	window.addEventListener("load", () => {
-    		// setting canvas width/height... offsetwidth/height returns viewable width/height of an element
     		$$invalidate(0, canvas.width = window.innerWidth, canvas);
-
     		$$invalidate(0, canvas.height = window.innerHeight, canvas);
     		setCanvasBackground();
     	});
@@ -916,6 +916,7 @@ var app = (function () {
     		set_store_value(isErasing, $isErasing = true, $isErasing);
     	};
 
+    	//on pointer down event
     	const handleStart = e => {
     		e.preventDefault();
     		isDrawing = true;
@@ -926,11 +927,12 @@ var app = (function () {
     		undoStack.push(context.getImageData(0, 0, canvas.width, canvas.height));
     	};
 
+    	//on pointer up
     	const handleEnd = () => {
     		isDrawing = false;
     	};
 
-    	//to set the erase value to true
+    	//on pointer move
     	const handleMove = e => {
     		e.preventDefault();
     		if (!isDrawing) return;
@@ -938,6 +940,7 @@ var app = (function () {
     		// adding copied canvas data on to this canvas
     		context.putImageData(snapshot, 0, 0);
 
+    		//check if eraser is selected
     		if ($isErasing) {
     			pen(e, context);
     		} else {
@@ -4281,52 +4284,52 @@ var app = (function () {
     			option7.textContent = "Straight Line";
     			option8 = element("option");
     			option8.textContent = "Gradient Line";
-    			attr_dev(h40, "class", "svelte-v6on7o");
+    			attr_dev(h40, "class", "svelte-1f2zn0b");
     			add_location(h40, file$1, 10, 0, 139);
     			option0.__value = "rectangle";
     			option0.value = option0.__value;
-    			attr_dev(option0, "class", "svelte-v6on7o");
-    			add_location(option0, file$1, 22, 2, 356);
+    			attr_dev(option0, "class", "svelte-1f2zn0b");
+    			add_location(option0, file$1, 23, 2, 380);
     			option1.__value = "triangle";
     			option1.value = option1.__value;
-    			attr_dev(option1, "class", "svelte-v6on7o");
-    			add_location(option1, file$1, 23, 2, 404);
+    			attr_dev(option1, "class", "svelte-1f2zn0b");
+    			add_location(option1, file$1, 24, 2, 428);
     			option2.__value = "circle";
     			option2.value = option2.__value;
-    			attr_dev(option2, "class", "svelte-v6on7o");
-    			add_location(option2, file$1, 24, 2, 450);
+    			attr_dev(option2, "class", "svelte-1f2zn0b");
+    			add_location(option2, file$1, 25, 2, 474);
     			option3.__value = "hexagon";
     			option3.value = option3.__value;
-    			attr_dev(option3, "class", "svelte-v6on7o");
-    			add_location(option3, file$1, 25, 2, 492);
+    			attr_dev(option3, "class", "svelte-1f2zn0b");
+    			add_location(option3, file$1, 26, 2, 516);
     			option4.__value = "ellipse";
     			option4.value = option4.__value;
-    			attr_dev(option4, "class", "svelte-v6on7o");
-    			add_location(option4, file$1, 26, 2, 536);
-    			attr_dev(select0, "class", "dropdown svelte-v6on7o");
+    			attr_dev(option4, "class", "svelte-1f2zn0b");
+    			add_location(option4, file$1, 27, 2, 560);
+    			attr_dev(select0, "class", "dropdown svelte-1f2zn0b");
     			if (/*$selectedShape*/ ctx[1] === void 0) add_render_callback(() => /*select0_change_handler*/ ctx[5].call(select0));
-    			add_location(select0, file$1, 12, 0, 158);
-    			attr_dev(h41, "class", "svelte-v6on7o");
-    			add_location(h41, file$1, 28, 0, 589);
+    			add_location(select0, file$1, 13, 0, 182);
+    			attr_dev(h41, "class", "svelte-1f2zn0b");
+    			add_location(h41, file$1, 29, 0, 613);
     			option5.__value = "pen";
     			option5.value = option5.__value;
-    			attr_dev(option5, "class", "svelte-v6on7o");
-    			add_location(option5, file$1, 39, 2, 807);
+    			attr_dev(option5, "class", "svelte-1f2zn0b");
+    			add_location(option5, file$1, 41, 2, 856);
     			option6.__value = "dashedLine";
     			option6.value = option6.__value;
-    			attr_dev(option6, "class", "svelte-v6on7o");
-    			add_location(option6, file$1, 40, 2, 843);
+    			attr_dev(option6, "class", "svelte-1f2zn0b");
+    			add_location(option6, file$1, 42, 2, 892);
     			option7.__value = "line";
     			option7.value = option7.__value;
-    			attr_dev(option7, "class", "svelte-v6on7o");
-    			add_location(option7, file$1, 41, 2, 894);
+    			attr_dev(option7, "class", "svelte-1f2zn0b");
+    			add_location(option7, file$1, 43, 2, 943);
     			option8.__value = "gradientLine";
     			option8.value = option8.__value;
-    			attr_dev(option8, "class", "svelte-v6on7o");
-    			add_location(option8, file$1, 42, 2, 942);
-    			attr_dev(select1, "class", "dropdown svelte-v6on7o");
+    			attr_dev(option8, "class", "svelte-1f2zn0b");
+    			add_location(option8, file$1, 44, 2, 991);
+    			attr_dev(select1, "class", "dropdown svelte-1f2zn0b");
     			if (/*$selectedStroke*/ ctx[4] === void 0) add_render_callback(() => /*select1_change_handler*/ ctx[7].call(select1));
-    			add_location(select1, file$1, 29, 0, 607);
+    			add_location(select1, file$1, 31, 0, 656);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -4490,7 +4493,7 @@ var app = (function () {
 
     function create_fragment(ctx) {
     	let body;
-    	let div4;
+    	let div5;
     	let section0;
     	let canvas;
     	let updating_handleClear;
@@ -4538,6 +4541,7 @@ var app = (function () {
     	let div2;
     	let tools;
     	let t21;
+    	let div4;
     	let div3;
     	let colorinput;
     	let updating_color;
@@ -4634,7 +4638,7 @@ var app = (function () {
     	const block = {
     		c: function create() {
     			body = element("body");
-    			div4 = element("div");
+    			div5 = element("div");
     			section0 = element("section");
     			create_component(canvas.$$.fragment);
     			t0 = space();
@@ -4685,75 +4689,78 @@ var app = (function () {
     			div2 = element("div");
     			create_component(tools.$$.fragment);
     			t21 = space();
+    			div4 = element("div");
     			div3 = element("div");
     			create_component(colorinput.$$.fragment);
     			t22 = space();
     			input = element("input");
-    			attr_dev(section0, "class", "canvas svelte-134i7fc");
+    			attr_dev(section0, "class", "canvas svelte-ufwe99");
     			add_location(section0, file, 36, 4, 1195);
     			attr_dev(span0, "class", "material-symbols-rounded");
-    			add_location(span0, file, 54, 8, 1614);
+    			add_location(span0, file, 54, 8, 1633);
     			attr_dev(button0, "id", "close-toolbox");
-    			attr_dev(button0, "class", "svelte-134i7fc");
-    			add_location(button0, file, 53, 6, 1555);
-    			attr_dev(section1, "class", "close svelte-134i7fc");
-    			add_location(section1, file, 52, 4, 1525);
+    			attr_dev(button0, "class", "svelte-ufwe99");
+    			add_location(button0, file, 53, 6, 1574);
+    			attr_dev(section1, "class", "close svelte-ufwe99");
+    			add_location(section1, file, 52, 4, 1544);
     			attr_dev(span1, "class", "material-symbols-rounded");
-    			add_location(span1, file, 59, 8, 1795);
+    			add_location(span1, file, 59, 8, 1814);
     			attr_dev(button1, "id", "open-toolbox");
-    			attr_dev(button1, "class", "svelte-134i7fc");
-    			add_location(button1, file, 58, 6, 1738);
-    			attr_dev(section2, "class", "open svelte-134i7fc");
-    			add_location(section2, file, 57, 4, 1709);
-    			attr_dev(h2, "class", "svelte-134i7fc");
-    			add_location(h2, file, 63, 6, 1933);
+    			attr_dev(button1, "class", "svelte-ufwe99");
+    			add_location(button1, file, 58, 6, 1757);
+    			attr_dev(section2, "class", "open svelte-ufwe99");
+    			add_location(section2, file, 57, 4, 1728);
+    			attr_dev(h2, "class", "svelte-ufwe99");
+    			add_location(h2, file, 66, 6, 2022);
     			attr_dev(span2, "class", "material-symbols-rounded");
-    			add_location(span2, file, 66, 10, 2060);
-    			attr_dev(button2, "class", "canvas-tools-buttons svelte-134i7fc");
-    			add_location(button2, file, 65, 8, 1990);
+    			add_location(span2, file, 69, 10, 2149);
+    			attr_dev(button2, "class", "canvas-tools-buttons svelte-ufwe99");
+    			add_location(button2, file, 68, 8, 2079);
     			attr_dev(span3, "class", "material-symbols-rounded");
-    			add_location(span3, file, 69, 10, 2214);
-    			attr_dev(button3, "class", "canvas-tools-buttons svelte-134i7fc");
-    			add_location(button3, file, 68, 8, 2142);
+    			add_location(span3, file, 72, 10, 2303);
+    			attr_dev(button3, "class", "canvas-tools-buttons svelte-ufwe99");
+    			add_location(button3, file, 71, 8, 2231);
     			attr_dev(span4, "class", "material-symbols-rounded");
-    			add_location(span4, file, 72, 10, 2368);
-    			attr_dev(button4, "class", "canvas-tools-buttons svelte-134i7fc");
-    			add_location(button4, file, 71, 8, 2295);
-    			attr_dev(div0, "class", "canvas-tools svelte-134i7fc");
-    			add_location(div0, file, 64, 6, 1955);
+    			add_location(span4, file, 75, 10, 2457);
+    			attr_dev(button4, "class", "canvas-tools-buttons svelte-ufwe99");
+    			add_location(button4, file, 74, 8, 2384);
+    			attr_dev(div0, "class", "canvas-tools svelte-ufwe99");
+    			add_location(div0, file, 67, 6, 2044);
     			attr_dev(span5, "class", "material-symbols-rounded");
-    			add_location(span5, file, 77, 10, 2568);
-    			attr_dev(button5, "class", "canvas-tools-buttons svelte-134i7fc");
-    			add_location(button5, file, 76, 8, 2497);
+    			add_location(span5, file, 80, 10, 2657);
+    			attr_dev(button5, "class", "canvas-tools-buttons svelte-ufwe99");
+    			add_location(button5, file, 79, 8, 2586);
     			attr_dev(span6, "class", "material-symbols-rounded");
-    			add_location(span6, file, 80, 10, 2721);
-    			attr_dev(button6, "class", "canvas-tools-buttons svelte-134i7fc");
-    			add_location(button6, file, 79, 8, 2650);
+    			add_location(span6, file, 83, 10, 2810);
+    			attr_dev(button6, "class", "canvas-tools-buttons svelte-ufwe99");
+    			add_location(button6, file, 82, 8, 2739);
     			attr_dev(span7, "class", "material-symbols-rounded");
-    			add_location(span7, file, 83, 10, 2881);
-    			attr_dev(button7, "class", "canvas-tools-buttons svelte-134i7fc");
-    			add_location(button7, file, 82, 8, 2811);
+    			add_location(span7, file, 86, 10, 2970);
+    			attr_dev(button7, "class", "canvas-tools-buttons svelte-ufwe99");
+    			add_location(button7, file, 85, 8, 2900);
     			attr_dev(span8, "class", "material-symbols-rounded");
-    			add_location(span8, file, 86, 10, 3030);
-    			attr_dev(button8, "class", "canvas-tools-buttons svelte-134i7fc");
-    			add_location(button8, file, 85, 8, 2960);
-    			attr_dev(div1, "class", "canvas-tools svelte-134i7fc");
-    			add_location(div1, file, 75, 6, 2462);
-    			attr_dev(div2, "class", "painting-tools svelte-134i7fc");
-    			add_location(div2, file, 90, 6, 3121);
-    			attr_dev(input, "class", "size-slider svelte-134i7fc");
+    			add_location(span8, file, 89, 10, 3119);
+    			attr_dev(button8, "class", "canvas-tools-buttons svelte-ufwe99");
+    			add_location(button8, file, 88, 8, 3049);
+    			attr_dev(div1, "class", "canvas-tools svelte-ufwe99");
+    			add_location(div1, file, 78, 6, 2551);
+    			attr_dev(div2, "class", "painting-tools svelte-ufwe99");
+    			add_location(div2, file, 93, 6, 3210);
+    			attr_dev(div3, "class", "color-input");
+    			add_location(div3, file, 98, 8, 3341);
+    			attr_dev(input, "class", "size-slider svelte-ufwe99");
     			attr_dev(input, "type", "range");
     			attr_dev(input, "min", "0");
     			attr_dev(input, "max", "100");
-    			add_location(input, file, 97, 8, 3330);
-    			attr_dev(div3, "class", "styles-tools svelte-134i7fc");
-    			add_location(div3, file, 93, 6, 3187);
+    			add_location(input, file, 102, 8, 3470);
+    			attr_dev(div4, "class", "styles-tools svelte-ufwe99");
+    			add_location(div4, file, 96, 6, 3276);
     			attr_dev(section3, "id", "tool-box");
-    			attr_dev(section3, "class", "toolbox svelte-134i7fc");
-    			add_location(section3, file, 62, 4, 1887);
-    			attr_dev(div4, "class", "container");
-    			add_location(div4, file, 34, 2, 1137);
-    			attr_dev(body, "class", "svelte-134i7fc");
+    			attr_dev(section3, "class", "toolbox svelte-ufwe99");
+    			add_location(section3, file, 65, 4, 1976);
+    			attr_dev(div5, "class", "container");
+    			add_location(div5, file, 34, 2, 1137);
+    			attr_dev(body, "class", "svelte-ufwe99");
     			add_location(body, file, 33, 0, 1128);
     		},
     		l: function claim(nodes) {
@@ -4761,19 +4768,19 @@ var app = (function () {
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, body, anchor);
-    			append_dev(body, div4);
-    			append_dev(div4, section0);
+    			append_dev(body, div5);
+    			append_dev(div5, section0);
     			mount_component(canvas, section0, null);
-    			append_dev(div4, t0);
-    			append_dev(div4, section1);
+    			append_dev(div5, t0);
+    			append_dev(div5, section1);
     			append_dev(section1, button0);
     			append_dev(button0, span0);
-    			append_dev(div4, t2);
-    			append_dev(div4, section2);
+    			append_dev(div5, t2);
+    			append_dev(div5, section2);
     			append_dev(section2, button1);
     			append_dev(button1, span1);
-    			append_dev(div4, t4);
-    			append_dev(div4, section3);
+    			append_dev(div5, t4);
+    			append_dev(div5, section3);
     			append_dev(section3, h2);
     			append_dev(section3, t6);
     			append_dev(section3, div0);
@@ -4802,10 +4809,11 @@ var app = (function () {
     			append_dev(section3, div2);
     			mount_component(tools, div2, null);
     			append_dev(section3, t21);
-    			append_dev(section3, div3);
+    			append_dev(section3, div4);
+    			append_dev(div4, div3);
     			mount_component(colorinput, div3, null);
-    			append_dev(div3, t22);
-    			append_dev(div3, input);
+    			append_dev(div4, t22);
+    			append_dev(div4, input);
     			set_input_value(input, /*brushsize*/ ctx[1]);
     			current = true;
 

@@ -1,9 +1,10 @@
+//draw freehand line
 export const pen = (e, ctx) => {
   ctx.lineTo(e.offsetX, e.offsetY); // creating line according to the mouse pointer
   ctx.stroke();
 };
 
-//Draw Line
+//Draw straight line
 export const drawLine = (e, ctx, prevMouseX, prevMouseY) => {
   ctx.beginPath();
   ctx.moveTo(prevMouseX, prevMouseY); // moving polygon to the mouse pointer

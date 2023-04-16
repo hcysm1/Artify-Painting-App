@@ -28,14 +28,14 @@
   let redoStack = [];
   let scale = 1;
 
+  //set canvas background
   const setCanvasBackground = () => {
     // setting canvas to the original background color
     context.fillStyle = "#fffbeb";
     context.fillRect(0, 0, canvas.width, canvas.height);
   };
-  window.addEventListener("load", () => {
-    // setting canvas width/height... offsetwidth/height returns viewable width/height of an element
 
+  window.addEventListener("load", () => {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     setCanvasBackground();
@@ -45,6 +45,7 @@
     context = canvas.getContext("2d");
   });
 
+  //erase function
   export const handleErase = () => {
     $selectedStroke = "pen";
     $isErasing = true;
@@ -58,6 +59,7 @@
     context.lineJoin = "round"; //change brush shape
   }
 
+  //on pointer down event
   const handleStart = (e) => {
     e.preventDefault();
     isDrawing = true;
@@ -68,12 +70,12 @@
     undoStack.push(context.getImageData(0, 0, canvas.width, canvas.height));
   };
 
+  //on pointer up
   const handleEnd = () => {
     isDrawing = false;
   };
 
-  //to set the erase value to true
-
+  //on pointer move
   const handleMove = (e) => {
     e.preventDefault();
     if (!isDrawing) return;
@@ -81,6 +83,7 @@
     // adding copied canvas data on to this canvas
     context.putImageData(snapshot, 0, 0);
 
+    //check if eraser is selected
     if ($isErasing) {
       pen(e, context);
     } else {

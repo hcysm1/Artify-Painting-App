@@ -35,7 +35,6 @@
   <div class="container">
     <!-- Painting Section -->
     <section class="canvas">
-      <!-- Canvas -->
       <Canvas
         {color}
         {brushsize}
@@ -48,8 +47,9 @@
         bind:handleErase
       />
     </section>
+    <!-- Painting Section -->
 
-    <!-- Toolbox Section -->
+    <!-- Open/Close Toolbox Section -->
     <section class="close">
       <button id="close-toolbox" on:click={handleClose}>
         <span class="material-symbols-rounded">arrow_forward</span>
@@ -60,6 +60,9 @@
         <span class="material-symbols-rounded">arrow_back</span>
       </button>
     </section>
+    <!-- Open/Close Toolbox Section -->
+
+    <!-- Toolbox Section -->
     <section id="tool-box" class="toolbox">
       <h2>Artify</h2>
       <div class="canvas-tools">
@@ -93,7 +96,9 @@
       </div>
       <div class="styles-tools">
         <!-- Color Picker -->
-        <ColorInput bind:color showAlphaSlider />
+        <div class="color-input">
+          <ColorInput bind:color showAlphaSlider />
+        </div>
         <!-- brush size -->
         <input
           class="size-slider"
@@ -104,6 +109,7 @@
         />
       </div>
     </section>
+    <!-- Toolbox Section -->
   </div>
 </body>
 
@@ -222,7 +228,6 @@
 
   .size-slider {
     width: 100%;
-    height: 5px;
     margin-top: 30px;
     cursor: pointer;
   }
