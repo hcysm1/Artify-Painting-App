@@ -1,14 +1,27 @@
-## Get started
+# 🎨 Artify
 
-Install the dependencies...
+Artify, a digital canvas that lets you unleash your creativity and imagination. With a variety of brushes, colors, and shapes to choose from.
 
-cd svelte-app
-npm install
+The App's user-friendly interface makes it easy to navigate, whether you're an experienced artist or just starting. You can select different brush sizes and types, adjust opacity, and experiment with different shapes.
 
-````
+In addition, the app provides a range of features to enhance your painting experience, such as the ability to zoom in and out, undo and redo, and save and share your artwork with others.
 
-...then start [Rollup](https://rollupjs.org):
+[Live Demo](https://artiify.vercel.app/)
 
-```bash
-npm run dev
-````
+## Features
+
+- Resizable Brushes 🖌️
+- Variety of Colors 🎨
+- Different Strokes 🖌️
+- Different Shapes ⚪
+- Ability to zoom in and out 🔍
+- Ability to undo and redo ↩️
+- Save and share your drawing as an image 💾
+
+## Local Development
+
+- `git clone` this repo and move in the directory
+- `npm install` (requires node and npm to be installed already)
+- `npm run dev` (to start development server)
+
+## Demo Video
