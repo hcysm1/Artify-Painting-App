@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 🎨 Artify
 
 Artify, a digital canvas that lets you unleash your creativity and imagination. With a variety of brushes, colors, and shapes to choose from.
@@ -25,3 +26,9 @@ In addition, the app provides a range of features to enhance your painting exper
 - `npm run dev` (to start development server)
 
 ## Demo Video
+=======
+## Demo
+https://artiify.vercel.app/
+
+
+>>>>>>> 7683bfd24a727551ec8b24c666bf8741f3ecbe6d
