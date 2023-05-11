@@ -24,6 +24,5 @@ In addition, the app provides a range of features to enhance your painting exper
 - `npm install` (requires node and npm to be installed already)
 - `npm run dev` (to start development server)
 
-## Demo Video
-https://user-images.githubusercontent.com/49655681/232430840-772920e5-d6ce-4d52-b0cb-2ea33e72def5.mp4
+
 
